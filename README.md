@@ -8,7 +8,7 @@ Install Python 3 using [asdf](https://asdf-vm.com/guide/getting-started.html), o
 
 ## Run
 
-Example: `python -m aoc2024 1`
+Example: `python -m aoclibs 2024 1`
 
 ## Tests
 

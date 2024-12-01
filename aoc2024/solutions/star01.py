@@ -8,7 +8,7 @@ Solutions:
     2. Sorting - O(nlogn) time, O(n) auxiliary space
 """
 
-from aoc2024.aoclibs import inputs
+from aoclibs import inputs
 
 def run(grid: list[list[int]]) -> int:
     """Calculate the sum of absolute differences of value pairs."""
