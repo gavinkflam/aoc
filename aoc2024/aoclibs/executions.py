@@ -1,7 +1,7 @@
 """Helper functions related to executing solutions from shell."""
 
-from aoclibs import inputs
-from solutions import star01, star02
+from aoc2024.aoclibs import inputs
+from aoc2024.solutions import star01, star02
 
 SOLUTIONS = {
     1: star01,

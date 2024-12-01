@@ -2,7 +2,7 @@
 
 import sys
 
-import aoclibs.executions
+from aoc2024.aoclibs import executions
 
 if __name__ == '__main__':
-    aoclibs.executions.main(sys.argv)
+    executions.main(sys.argv)

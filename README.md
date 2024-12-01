@@ -8,7 +8,11 @@ Install Python 3 using [asdf](https://asdf-vm.com/guide/getting-started.html), o
 
 ## Run
 
-Example: `python 2024 1`
+Example: `python -m aoc2024 1`
+
+## Tests
+
+Run: `python -m unittest`
 
 ## Linting
 
@@ -16,6 +20,6 @@ Install: `pip install pylint`
 
 Run: `pylint **/*.py`
 
-## License
+# License
 
 MIT
