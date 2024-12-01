@@ -8,6 +8,8 @@ Solutions:
     2. Sorting - O(nlogn) time, O(n) auxiliary space
 """
 
+from aoc2024.aoclibs import inputs
+
 def run(grid: list[list[int]]) -> int:
     """Calculate the sum of absolute differences of value pairs."""
     cols = len(grid)
@@ -18,3 +20,6 @@ def run(grid: list[list[int]]) -> int:
 
     diff_sum = sum(abs(left[c] - right[c]) for c in range(cols))
     return diff_sum
+
+PARSER = inputs.parse_int_grid
+PRINTER = str

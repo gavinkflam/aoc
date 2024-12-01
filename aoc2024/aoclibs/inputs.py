@@ -5,8 +5,8 @@ from pathlib import Path
 
 INPUT_DIR = abspath(str(Path(__file__).parent.absolute()) + '/../inputs')
 
-def input_for_star(star: int) -> str:
-    """Read the content of the input file for the given star."""
+def input_content(star: int) -> str:
+    """Read the content of the input file for the given puzzle."""
     return Path(f'{INPUT_DIR}/star{str(star).zfill(2)}.txt').read_text(encoding='utf-8')
 
 def parse_int_grid(lines: str) -> list[list[int]]:
