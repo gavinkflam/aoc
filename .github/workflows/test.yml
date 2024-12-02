@@ -17,7 +17,13 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pylint
+        pip install -r requirements.txt
+        pip install -r requirements-dev.txt
+    - name: Decrypt data files
+      run: |
+        python -m aoclibs decrypt_files
+      env:
+        AOC_ENC_KEY: ${{ secrets.AOC_ENC_KEY }}
     - name: Analysing the code with pylint
       run: |
         pylint $(git ls-files '*.py')
