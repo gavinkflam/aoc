@@ -1,19 +1,23 @@
 """Helper functions related to resource file manipulation."""
 
 import glob
-from os import path
+import os.path
 from pathlib import Path
 
 import cryptocode
 
-PROJECT_DIR = path.abspath(str(Path(__file__).parent.absolute()) + '/..')
+PROJECT_DIR = os.path.abspath(str(Path(__file__).parent.absolute()) + '/..')
 
 def encrypt_file(key: str, filepath: str) -> None:
     """Encrypt the content of a file and save it as a .enc file."""
     content = Path(filepath).read_text(encoding='utf-8')
     parent_path, filename = str(Path(filepath).parent.absolute()), Path(filepath).stem
+    enc_filepath = f'{parent_path}/{filename}.enc'
 
-    with open(f'{parent_path}/{filename}.enc', 'w', encoding='utf-8') as enc_file:
+    if os.path.exists(enc_filepath):
+        return
+
+    with open(enc_filepath, 'w', encoding='utf-8') as enc_file:
         print(cryptocode.encrypt(content, key), file=enc_file, end='')
 
 def decrypt_file(key: str, filepath: str) -> None:
