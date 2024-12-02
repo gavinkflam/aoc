@@ -1,4 +1,4 @@
-# Advent of Code
+# 🎄 Advent of Code
 
 My solutions of the [Advent of Code](https://adventofcode.com/) coding puzzles.
 
