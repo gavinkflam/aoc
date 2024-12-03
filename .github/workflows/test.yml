@@ -19,14 +19,17 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install -r requirements-dev.txt
+    - name: Checking code formatting with black
+      run: |
+        black --check $(git ls-files '*.py')
+    - name: Analysing the code with pylint
+      run: |
+        pylint $(git ls-files '*.py')
     - name: Decrypt data files
       run: |
         python -m aoclibs decrypt_files
       env:
         AOC_ENC_KEY: ${{ secrets.AOC_ENC_KEY }}
-    - name: Analysing the code with pylint
-      run: |
-        pylint $(git ls-files '*.py')
     - name: Run unit tests
       run: |
         python -m unittest

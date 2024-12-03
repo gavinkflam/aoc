@@ -11,6 +11,7 @@ Solutions:
 
 from aoclibs import inputs
 
+
 def is_safe_report(report: list[int], direction: int) -> bool:
     """Determine is the given report safe by tolerating at most one bad level in each report."""
     cols = len(report)
@@ -37,6 +38,7 @@ def is_safe_report(report: list[int], direction: int) -> bool:
     # Safe by dropping the last level
     return True
 
+
 def run(grid: list[list[int]]) -> int:
     """Count the number of safe reports by tolerating at most one bad level in each report."""
     rows = len(grid)
@@ -47,6 +49,7 @@ def run(grid: list[list[int]]) -> int:
             safe_reports += 1
 
     return safe_reports
+
 
 PARSER = inputs.parse_int_grid
 PRINTER = str

@@ -12,12 +12,16 @@ My solutions of the [Advent of Code](https://adventofcode.com/) coding puzzles.
     - `pip install -r requirements.txt`
     - `pip install -r requirements-dev.txt`.
 
-## Decrypt data files
+## Data files
+
+Input and answer files are encrypted because Advent of Code states that inputs should not be shared.
+
+### Decrypt data files
 
 1. Export encryption key, e.g. `export AOC_ENC_KEY='hello_world'`.
 2. Decrypt all data files using `python -m aoclibs decrypt_files`
 
-## Encrypt data files
+### Encrypt data files
 
 1. Export encryption key, e.g. `export AOC_ENC_KEY='hello_world'`.
 2. Encrypt all data files using `python -m aoclibs encrypt_files`
@@ -26,14 +30,22 @@ My solutions of the [Advent of Code](https://adventofcode.com/) coding puzzles.
 
 Example: `python -m aoclibs run 2024 1`
 
-## Tests
+## Development
+
+### Tests
 
 `python -m unittest`
 
-## Linting
+### Formatting
+
+Use [Black](https://github.com/psf/black) to auto-format code.
+
+`black $(git ls-files '*.py')`
+
+### Linting
 
 `pylint $(git ls-files '*.py')`
 
-# License
+## License
 
 MIT
