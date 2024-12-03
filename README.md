@@ -1,5 +1,7 @@
 # 🎄 Advent of Code
 
+[![Maintainability](https://api.codeclimate.com/v1/badges/547c693ce34e52276ae2/maintainability)](https://codeclimate.com/github/gavinkflam/aoc/maintainability)
+
 My solutions of the [Advent of Code](https://adventofcode.com/) coding puzzles.
 
 ## Setup
