@@ -19,3 +19,8 @@ def parse_int_grid_regexp(content: str) -> list[list[int]]:
 def parse_str_lines(content: str) -> list[str]:
     """Parse the file content as lines of string."""
     return content.splitlines()
+
+
+def parse_char_grid(content: str) -> list[list[str]]:
+    """Parse the file content as a grid of character values."""
+    return [list(l) for l in content.splitlines()]
