@@ -10,6 +10,6 @@ class TestSolutions(unittest.TestCase):
 
     def test_solutions(self):
         """Run solutions with the defined input parser and result printer."""
-        for star in range(1, 9):
+        for star in range(1, 11):
             answer = files.data_file_content(2024, "star", star, path_prefix="/tests")
             self.assertEqual(answer, executions.run_solution(2024, star))
