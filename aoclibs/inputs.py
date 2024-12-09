@@ -16,6 +16,11 @@ def parse_int_grid_regexp(content: str) -> list[list[int]]:
     return [[int(s) for s in INT_PATTERN.findall(l)] for l in content.splitlines()]
 
 
+def parse_digit_list(content: str) -> list[int]:
+    """Parse the file content as a list of digits."""
+    return [int(ch) for ch in content]
+
+
 def parse_str_lines(content: str) -> list[str]:
     """Parse the file content as lines of string."""
     return content.splitlines()
