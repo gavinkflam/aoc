@@ -3,7 +3,7 @@
 import re
 
 
-INT_PATTERN = re.compile(r"\d+")
+INT_PATTERN = re.compile(r"-?\d+")
 
 
 def parse_int_grid(content: str) -> list[list[int]]:
