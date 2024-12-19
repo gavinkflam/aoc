@@ -3,5 +3,5 @@ max-locals=20
 
 [SIMILARITIES]
 
-ignore-docstrings=no
+ignore-docstrings=yes
 min-similarity-lines=10
