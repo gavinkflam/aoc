@@ -5,7 +5,7 @@ Problem page:
 
 Solutions:
     1. Interpreter
-        - O(n) time, O(n) auxiliary space
+        - O(n) time, O(1) auxiliary space
 """
 
 from aoclibs import inputs, outputs
