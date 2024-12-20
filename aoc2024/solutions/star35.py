@@ -39,14 +39,14 @@ def steps_to_reach_exit(grid: list[list[int]]) -> int:
         for x, y in queue:
             for dx, dy in DIRECTIONS:
                 nx, ny = x + dx, y + dy
-                if not (0 <= nx < SIZE and 0 <= ny < SIZE and grid[nx][ny] == SPACE):
+                if not (0 <= nx < SIZE and 0 <= ny < SIZE and grid[ny][nx] == SPACE):
                     continue
-                if visited[nx][ny]:
+                if visited[ny][nx]:
                     continue
                 if nx == ny == SIZE - 1:
                     return steps + 1
 
-                visited[nx][ny] = True
+                visited[ny][nx] = True
                 new_queue.append((nx, ny))
 
         queue = new_queue

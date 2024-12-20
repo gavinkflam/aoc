@@ -4,7 +4,8 @@ Problem page:
     https://adventofcode.com/2024/day/6#part2
 
 Solutions:
-    1. DFS + backtracking - O(mn * mn) time, O(mn) auxiliary space
+    1. DFS + backtracking
+        - O(mn * mn) time, O(mn) auxiliary space
 """
 
 from aoclibs import inputs

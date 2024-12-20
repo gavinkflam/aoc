@@ -4,8 +4,10 @@ Problem page:
     https://adventofcode.com/2024/day/1
 
 Solutions:
-    1. Brute force - O(n^2) time, O(1) auxiliary space
-    2. Sorting - O(nlogn) time, O(n) auxiliary space
+    1. Brute force
+        - O(n^2) time, O(1) auxiliary space
+    2. Sorting
+        - O(nlogn) time, O(n) auxiliary space
 """
 
 from aoclibs import inputs

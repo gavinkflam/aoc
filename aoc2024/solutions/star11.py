@@ -4,8 +4,10 @@ Problem page:
     https://adventofcode.com/2024/day/6
 
 Solutions:
-    1. DFS - O(mn) time, O(mn) auxiliary space
-    2. DFS, in-place - O(mn) time, O(1) auxiliary space
+    1. DFS
+        - O(mn) time, O(mn) auxiliary space
+    2. DFS, in-place
+        - O(mn) time, O(1) auxiliary space
 """
 
 from aoclibs import inputs

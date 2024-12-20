@@ -4,12 +4,14 @@ Problem page:
     https://adventofcode.com/2024/day/3#part2
 
 Solutions:
-    1. Brute force - O(n * k * m) time, O(1) auxiliary space
-        where m = types of instructions, k = maximum length of valid instruction
+    1. Brute force
+        - O(n * k * m) time, O(1) auxiliary space
+            where m = types of instructions, k = maximum length of valid instruction
     2. Regular expression
         complexity depends on implementation and pattern complexity
-    3. State machine, DFA / NFA - O(n) time, O(n) auxiliary space
-        probably a fun challenge - may revisit and implement in the future
+    3. State machine, DFA / NFA
+        - O(n) time, O(n) auxiliary space
+            probably a fun challenge - may revisit and implement in the future
 """
 
 import re

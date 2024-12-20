@@ -33,7 +33,7 @@ def run(lists: list[list[int]]) -> int:
         if lo == -1:
             return a
 
-        for inc in range(65536):
+        for inc in range(32768):
             try_a = (a << 3) + inc
             outputs_buffer = star33.interpret_program((try_a, b, c, program))
 

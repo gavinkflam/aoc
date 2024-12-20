@@ -4,9 +4,12 @@ Problem page:
     https://adventofcode.com/2024/day/2#part2
 
 Solutions:
-    1. Brute force - O(rows * cols * cols) time, O(1) auxiliary space
-    2. Prefix and suffix array - O(rows * cols) time, O(cols) auxiliary space
-    3. Suffix array - O(rows * cols) time, O(cols) auxiliary space
+    1. Brute force
+        - O(rows * cols * cols) time, O(1) auxiliary space
+    2. Prefix and suffix array
+        - O(rows * cols) time, O(cols) auxiliary space
+    3. Suffix array
+        - O(rows * cols) time, O(cols) auxiliary space
 """
 
 from aoclibs import inputs

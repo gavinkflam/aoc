@@ -4,8 +4,9 @@ Problem page:
     https://adventofcode.com/2024/day/7
 
 Solutions:
-    1. Backtracking - worst: O(n * 2^m) time, best: O(nm) time, O(m) auxiliary space
-        where m = maximum number of numbers in an equation
+    1. Backtracking
+        - worst: O(n * 2^m) time, best: O(nm) time, O(m) auxiliary space
+            where m = maximum number of numbers in an equation
 """
 
 from aoclibs import inputs

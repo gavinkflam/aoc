@@ -4,7 +4,8 @@ Problem page:
     https://adventofcode.com/2024/day/4
 
 Solutions:
-    1. Simple iteration - O(mn) time, O(1) auxiliary space
+    1. Simple iteration
+        - O(mn) time, O(1) auxiliary space
 """
 
 from aoclibs import inputs

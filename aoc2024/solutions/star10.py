@@ -4,11 +4,13 @@ Problem page:
     https://adventofcode.com/2024/day/5#part2
 
 Solutions:
-    1. Hash map + hash set + sorting - O(k(p^2 + plogp) + n) time, O(n + p)
-        where n = number of page rules,
-              k = number of updates,
-              p = max pages in an update
-    2. Hash map + hash set, linear + sorting - O(n + kp + plogp) time, O(n + p) auxiliary space
+    1. Hash map + hash set + sorting
+        - O(k(p^2 + plogp) + n) time, O(n + p)
+            where n = number of page rules,
+                k = number of updates,
+                p = max pages in an update
+    2. Hash map + hash set, linear + sorting
+        - O(n + kp + plogp) time, O(n + p) auxiliary space
 """
 
 import functools

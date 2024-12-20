@@ -4,8 +4,9 @@ Problem page:
     https://adventofcode.com/2024/day/8
 
 Solutions:
-    1. Hash map + hash set, brute force - O(mn + k^2) time, O(k) auxiliary space
-        where k = number of antenna
+    1. Hash map + hash set, brute force
+        - O(mn + k^2) time, O(k) auxiliary space
+            where k = number of antenna
 """
 
 from collections import defaultdict

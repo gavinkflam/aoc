@@ -4,11 +4,13 @@ Problem page:
     https://adventofcode.com/2024/day/5
 
 Solutions:
-    1. Hash map + hash set - O(kp^2 + n) time, O(n) auxiliary space
-        where n = number of page rules,
-              k = number of updates,
-              p = max pages in an update
-    2. Hash map + hash set, linear - O(n + kp) time, O(n) auxiliary space
+    1. Hash map + hash set
+        - O(kp^2 + n) time, O(n) auxiliary space
+            where n = number of page rules,
+                k = number of updates,
+                p = max pages in an update
+    2. Hash map + hash set, linear
+        - O(n + kp) time, O(n) auxiliary space
 """
 
 from collections import defaultdict
