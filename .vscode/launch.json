@@ -1,0 +1,12 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run solution",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "aoclibs",
+            "args":"run ${command:pickArgs}"
+        }
+    ]
+}
