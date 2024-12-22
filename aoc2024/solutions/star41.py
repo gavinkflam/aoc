@@ -5,10 +5,12 @@ Problem page:
 
 Solutions:
     1. Simulation
-        - O(nk) time, O(1) auxiliary space
-            where k = maximum length of code
+        - O(nk) time, O(k) auxiliary space
+            where n = number of codes,
+                  k = maximum length of code
 """
 
+from functools import partial
 from typing import Callable
 
 from aoclibs import inputs
@@ -27,7 +29,7 @@ NUMPAD_COORDS = {
     "0": (3, 1),
     "A": (3, 2),
 }
-ARROW_COORDS = {
+DPAD_COORDS = {
     "^": (0, 1),
     "A": (0, 2),
     "<": (1, 0),
@@ -35,87 +37,64 @@ ARROW_COORDS = {
     ">": (1, 2),
 }
 NUMPAD_LAYOUT = ["789", "456", "123", " 0A"]
-ARROW_LAYOUT = [" ^A", "<v>"]
+DPAD_LAYOUT = [" ^A", "<v>"]
 
 
-Keymap = dict[str, tuple[int, int]]
-MoveFn = Callable[[str, str], list[str]]
+KeyCoords = dict[str, tuple[int, int]]
+Layout = list[str]
+InputFn = Callable[[str, str], list[str]]
 
 
 def horizontal_sequence(magnitude: int) -> list[str]:
     """Generate a horizontal move sequence of the given magnitude."""
     if magnitude < 0:
         return ["<"] * -magnitude
-    if magnitude > 0:
-        return [">"] * magnitude
-    return []
+    return [">"] * magnitude
 
 
 def vertical_sequence(magnitude: int) -> list[str]:
     """Generate a vertical move sequence of the given magnitude."""
     if magnitude < 0:
         return ["^"] * -magnitude
-    if magnitude > 0:
-        return ["v"] * magnitude
-    return []
+    return ["v"] * magnitude
 
 
-def numpad_move_sequence(start: str, end: str) -> list[str]:
-    """Find the shortest input to move from start to end on the numpad."""
+def input_sequence(
+    coords: KeyCoords, layout: Layout, start: str, end: str
+) -> list[str]:
+    """Find the shortest input sequence to move to the end key and press it."""
     sequence = []
-    (sr, sc), (er, ec) = NUMPAD_COORDS[start], NUMPAD_COORDS[end]
+    (sr, sc), (er, ec) = coords[start], coords[end]
 
-    horizontal_first = (
-        # Left first can save and not passing through gap
-        (ec < sc and NUMPAD_LAYOUT[sr][ec] != " ")
-        # Down first can save but passing through gap. Go horizontal first
-        or (er > sr and NUMPAD_LAYOUT[er][sc] == " ")
-    )
-
-    if horizontal_first:
+    if (
+        # Prioritize moving left first
+        (ec < sc and layout[sr][ec] != " ")
+        # Moving vertically first would go out of boundary
+        or (layout[er][0] == " " and sc == 0)
+    ):
         sequence.extend(horizontal_sequence(ec - sc))
         sequence.extend(vertical_sequence(er - sr))
     else:
         sequence.extend(vertical_sequence(er - sr))
         sequence.extend(horizontal_sequence(ec - sc))
 
+    sequence.append("A")
     return sequence
 
 
-def arrow_keypad_move_sequence(start: str, end: str) -> list[str]:
-    """Find the shortest input to move from start to end on the arrow keypad."""
-    sequence = []
-    (sr, sc), (er, ec) = ARROW_COORDS[start], ARROW_COORDS[end]
-
-    if er > sr:
-        sequence.extend(vertical_sequence(er - sr))
-        sequence.extend(horizontal_sequence(ec - sc))
-    else:
-        sequence.extend(horizontal_sequence(ec - sc))
-        sequence.extend(vertical_sequence(er - sr))
-
-    return sequence
+numpad_to_dpad = partial(input_sequence, NUMPAD_COORDS, NUMPAD_LAYOUT)
+dpad_to_dpad = partial(input_sequence, DPAD_COORDS, DPAD_LAYOUT)
 
 
-def type_sequence(sequence: list[str], move_fn: MoveFn) -> list[str]:
-    """Find the shortest input to type the given sequence."""
-    result = []
-    prev = "A"
+def wrap_sequence(sequence: list[str], input_fn: InputFn) -> list[str]:
+    """Find the input sequence for the next level of keypad."""
+    result, prev = [], "A"
 
     for curr in sequence:
-        result.extend(move_fn(prev, curr))
-        result.append("A")
+        result.extend(input_fn(prev, curr))
         prev = curr
 
     return result
-
-
-def button_sequence(code: str) -> list[str]:
-    """Find the final button sequence to input the given code."""
-    sequence = type_sequence(list(code), numpad_move_sequence)
-    sequence = type_sequence(sequence, arrow_keypad_move_sequence)
-    sequence = type_sequence(sequence, arrow_keypad_move_sequence)
-    return sequence
 
 
 def run(codes: list[str]) -> int:
@@ -124,7 +103,9 @@ def run(codes: list[str]) -> int:
 
     for code in codes:
         numeric_part = int(code[:-1])
-        sequence = button_sequence(code)
+        sequence = wrap_sequence(list(code), numpad_to_dpad)
+        sequence = wrap_sequence(sequence, dpad_to_dpad)
+        sequence = wrap_sequence(sequence, dpad_to_dpad)
         complexity_sum += numeric_part * len(sequence)
 
     return complexity_sum
