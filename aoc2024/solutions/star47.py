@@ -18,14 +18,15 @@ from typing import NamedTuple
 from aoclibs import inputs
 
 
-WireValues = dict[str, int]
-AdjacencyList = dict[str, set[str]]
-Degrees = dict[str, int]
-Gate = NamedTuple(
-    "Gate", [("input1", str), ("input2", str), ("fn", str), ("output", str)]
-)
 Board = NamedTuple(
-    "InitialState", [("initial_values", WireValues), ("gates", dict[str, Gate])]
+    "Board",
+    [
+        ("initial_values", dict[str, int]),
+        ("logics", dict[str, str]),
+        ("adj_list", dict[str, set[str]]),
+        ("inputs_to", dict[str, list[str]]),
+        ("in_degrees", dict[str, int]),
+    ],
 )
 
 
@@ -48,8 +49,8 @@ GATE_FUNCTIONS = {"AND": and_gate, "OR": or_gate, "XOR": xor_gate}
 
 
 def parse_inputs(lines: list[str]) -> Board:
-    """Parse inputs into initial value of wires and configuration of gates."""
-    initial_values, gates = {}, {}
+    """Parse inputs into initial value and configuration of wires."""
+    initial_values, logics = {}, {}
     i = 0
 
     # Read initial values
@@ -58,72 +59,62 @@ def parse_inputs(lines: list[str]) -> Board:
         wire, value = line[:3], int(line[5])
         initial_values[wire] = value
         i += 1
-
     i += 1
 
-    # Read gates
-    next_gate = 0
+    # Read logical gates
+    adj_list, inputs_to = defaultdict(set), defaultdict(list)
+    indegrees = defaultdict(int)
 
-    while i + next_gate < len(lines):
-        input1, fn, input2, _, output = lines[i + next_gate].split(" ")
-        node_name = f"gate{str(next_gate).rjust(3, "0")}"
-        gates[node_name] = Gate(input1, input2, fn, output)
+    while i < len(lines):
+        input1, fn, input2, _, output = lines[i].split(" ")
 
-        next_gate += 1
+        logics[output] = fn
+        adj_list[input1].add(output)
+        adj_list[input2].add(output)
 
-    return Board(initial_values, gates)
+        inputs_to[output].append(input1)
+        inputs_to[output].append(input2)
+        indegrees[output] += 2
 
+        i += 1
 
-def build_adj_list(board: Board) -> tuple[AdjacencyList, Degrees]:
-    """Construct adjacency list from the given board and count the in-degree of each node."""
-    adj_list, in_degrees = defaultdict(set), defaultdict(int)
-
-    for gate_name, gate in board.gates.items():
-        adj_list[gate.input1].add(gate_name)
-        adj_list[gate.input2].add(gate_name)
-        adj_list[gate_name].add(gate.output)
-
-        in_degrees[gate_name] = 2
-        in_degrees[gate.output] += 1
-
-    return (adj_list, in_degrees)
+    return Board(initial_values, logics, adj_list, inputs_to, indegrees)
 
 
-def find_values(board: Board) -> dict[str, int]:
-    """Find values of wires on the board."""
-    adj_list, in_degrees = build_adj_list(board)
+def solve_values(board: Board) -> dict[str, int]:
+    """Solve values of wires on the board."""
     values = board.initial_values.copy()
-    sources = list(board.initial_values.keys())
+    queue = list(board.initial_values.keys())
 
-    while sources:
-        new_sources = []
+    while queue:
+        new_queue = []
 
-        for source in sources:
-            # If source is a gate, calculate value for the output wire
-            if source.startswith("gate"):
-                gate = board.gates[source]
-                gate_fn = GATE_FUNCTIONS[gate.fn]
-                values[gate.output] = gate_fn(values[gate.input1], values[gate.input2])
+        for wire in queue:
+            # If the wire is an output of a logical gate, calculate its value
+            if wire in board.logics:
+                gate_fn = GATE_FUNCTIONS[board.logics[wire]]
+                input1, input2 = board.inputs_to[wire]
+                values[wire] = gate_fn(values[input1], values[input2])
 
-            # Find downstream nodes with all dependencies resolved
-            marked_for_removal = []
+            # Find downstream wires with all dependencies resolved
+            removes = []
 
-            for node in adj_list[source]:
-                in_degrees[node] -= 1
-                marked_for_removal.append(node)
+            for child in board.adj_list[wire]:
+                board.in_degrees[child] -= 1
+                removes.append(child)
 
-                if in_degrees[node] == 0:
-                    new_sources.append(node)
+                if board.in_degrees[child] == 0:
+                    new_queue.append(child)
 
-            for node in marked_for_removal:
-                adj_list[source].remove(node)
+            for child in removes:
+                board.adj_list[wire].remove(child)
 
-        sources = new_sources
+        queue = new_queue
 
     return values
 
 
-def construct_output_from_z_wires(values: WireValues) -> int:
+def construct_output_from_z_wires(values: dict[str, int]) -> int:
     """Construct the decimal number output from wires start with z."""
     output = 0
     next_wire = 0
@@ -141,7 +132,7 @@ def construct_output_from_z_wires(values: WireValues) -> int:
 def run(lines: list[str]) -> int:
     """Find the decimal number represented by the wires starting with z."""
     board = parse_inputs(lines)
-    values = find_values(board)
+    values = solve_values(board)
 
     return construct_output_from_z_wires(values)
 

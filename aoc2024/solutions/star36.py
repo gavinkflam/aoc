@@ -82,4 +82,4 @@ def run(positions: list[list[int]]) -> list[int]:
 
 
 PARSER = inputs.parse_int_grid_regexp
-PRINTER = outputs.stringify_integer_list
+PRINTER = outputs.stringify_list
