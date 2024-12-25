@@ -5,8 +5,10 @@ Problem page:
 
 Solutions:
     1. Backtracking
-        - worst: O(n * 2^m) time, best: O(nm) time, O(m) auxiliary space
+        - Worst: O(n * 2^m) time, best: O(nm) time, O(m) auxiliary space
             where m = maximum number of numbers in an equation
+        - Optimizations:
+            1. Start from the end to eliminate most multiplication and concat
 """
 
 from aoclibs import inputs

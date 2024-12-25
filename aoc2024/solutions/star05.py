@@ -8,10 +8,12 @@ Solutions:
         - O(n * k) time, O(1) auxiliary space
             where k = maximum length of valid instruction
     2. Regular expression
-        complexity depends on implementation and pattern complexity
+        - Remarks:
+            Complexity depends on pattern and library implementation.
     3. State machine, DFA / NFA
         - O(n) time, O(n) auxiliary space
-            probably a fun challenge - may revisit and implement in the future
+        - Remarks:
+            Maybe later.
 """
 
 import re

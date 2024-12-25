@@ -11,7 +11,8 @@ Solutions:
         - O(n + k) time, O(1) auxiliary space
     3. Two pointers + optimizations
         - O(n) time, O(1) auxiliary space
-        - Use Gauss summation to speed up checksum calculation
+        - Optimizations:
+            1. Use Gauss summation to speed up checksum calculation
 """
 
 from aoclibs import inputs

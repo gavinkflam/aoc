@@ -9,7 +9,7 @@ Solutions:
             where n = number of page rules,
                 k = number of updates,
                 p = max pages in an update
-    2. Hash map + hash set, linear + sorting
+    2. Hash map + hash set, linear time + sorting
         - O(n + kp + plogp) time, O(n + p) auxiliary space
 """
 

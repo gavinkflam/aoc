@@ -4,7 +4,7 @@ Problem page:
     https://adventofcode.com/2024/day/2
 
 Solutions:
-    1. Simple iteration
+    1. Iteration
         - O(rows * cols) time, O(1) auxiliary space
 """
 

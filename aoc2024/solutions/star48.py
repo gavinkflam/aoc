@@ -8,6 +8,12 @@ Solutions:
         - O(n + m) time, O(n + m) auxiliary space
             where n = number of gates,
                   m = number of wires
+        - Remarks:
+            This solution is only checking trivial problems against the standard implementation
+            of a binary adder.
+            
+            It won't work if the swaps are more careful (e.g. swapping wires of the same role
+            in two different bits), or the circuit is different than the standard implementation.
 """
 
 import re

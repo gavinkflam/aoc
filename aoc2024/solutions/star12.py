@@ -6,6 +6,8 @@ Problem page:
 Solutions:
     1. DFS + backtracking
         - O(mn * mn) time, O(mn) auxiliary space
+        - Optimizations:
+            1. Only try from the patrolling path
 """
 
 from aoclibs import inputs

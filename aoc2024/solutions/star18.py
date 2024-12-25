@@ -11,8 +11,9 @@ Solutions:
         - O(n^2 + n + k) time, O(n) auxiliary space
     4. Heap + optimizations
         - O(nlogn + n) time, O(n) auxiliary space
-        - Use a heap to keep track of the leftmost free space of each block size
-        - Use Gauss summation to speed up checksum calculation
+        - Optimizations:
+            1. Use a heap to keep track of the leftmost free space of each block size
+            2. Use Gauss summation to speed up checksum calculation
 """
 
 import heapq

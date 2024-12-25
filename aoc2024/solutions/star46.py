@@ -19,14 +19,14 @@ Further research:
     This is the problem of finding the maximum clique, which is a NP-complete problem.
 """
 
-from collections import namedtuple
+from typing import NamedTuple
 
 from aoc2024.solutions import star45
 from aoc2024.solutions.star45 import AdjacencyList
 from aoclibs import inputs
 
 
-Group = namedtuple("Group", ["leader", "members"])
+Group = NamedTuple("Group", [("leader", str), ("members", set[str])])
 
 
 def build_group(adj_list: AdjacencyList, *members: str) -> tuple[str, Group]:
