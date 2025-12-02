@@ -31,6 +31,11 @@ def parse_digit_list(content: str) -> list[int]:
     return [int(ch) for ch in content]
 
 
+def parse_str_line(content: str, sep: str = ",") -> list[str]:
+    """Parse the file content as a single line of string separated by the provided separator."""
+    return content.split(sep)
+
+
 def parse_str_lines(content: str) -> list[str]:
     """Parse the file content as lines of string."""
     return content.splitlines()
