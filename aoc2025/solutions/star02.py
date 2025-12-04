@@ -9,8 +9,8 @@ Solutions:
             where n = number of lines
 """
 
-from aoc2025.solutions import star01
 from aoclibs import inputs
+from aoc2025.solutions import star01
 
 
 def run(lines: list[str]) -> int:
