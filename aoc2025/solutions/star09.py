@@ -49,7 +49,11 @@ def run(database: InventoryDatabase) -> int:
 
 PARSER = inputs2.compose(
     inputs2.new_from_args(InventoryDatabase),
-    inputs2.split_zip_applyf("", inputs2.splitf("-", int), int),
+    inputs2.zip_applyf(
+        inputs2.mapf(inputs2.splitf("-", int)),
+        inputs2.mapf(int),
+    ),
+    inputs2.list_split(""),
     str.splitlines,
 )
 PRINTER = str
