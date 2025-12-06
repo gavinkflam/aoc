@@ -18,7 +18,7 @@ Solutions:
 from dataclasses import dataclass
 from typing import Optional
 
-from aoclibs import inputs
+from aoclibs import inputs2
 
 
 @dataclass
@@ -29,9 +29,8 @@ class ListNode:
     next: Optional["ListNode"] = None
 
 
-def run(lines: list[str]) -> int:
+def run(banks: list[list[int]]) -> int:
     """Find the sum of the maximum joltage possible from each bank."""
-    banks = [[int(ch) for ch in line] for line in lines]
     ans = 0
 
     for bank in banks:
@@ -76,5 +75,5 @@ def run(lines: list[str]) -> int:
     return ans
 
 
-PARSER = inputs.parse_str_lines
+PARSER = inputs2.compose(inputs2.mapf(inputs2.mapf(int)), str.splitlines)
 PRINTER = str

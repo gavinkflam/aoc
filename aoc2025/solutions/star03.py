@@ -14,13 +14,12 @@ Solutions:
 
 import math
 
-from aoclibs import inputs
+from aoclibs import inputs2
 
 
-def run(line: list[str]) -> int:
+def run(ranges: list[list[str]]) -> int:
     """Find the sum of the invalid IDs."""
     ans = 0
-    ranges = [item.split("-") for item in line]
 
     for lo_str, hi_str in ranges:
         lo, hi = int(lo_str), int(hi_str)
@@ -42,5 +41,5 @@ def run(line: list[str]) -> int:
     return ans
 
 
-PARSER = inputs.parse_str_line
+PARSER = inputs2.compose(inputs2.mapf(inputs2.splitf("-")), inputs2.splitf(","))
 PRINTER = str

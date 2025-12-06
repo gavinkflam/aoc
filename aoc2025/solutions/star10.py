@@ -14,26 +14,21 @@ Solutions:
         - O(mlogm) time, O(m) auxiliary space
 """
 
-from aoclibs import inputs
 from aoc2025.solutions import star09
 
 
-def run(lines: list[str]) -> int:
+def run(database: star09.InventoryDatabase) -> int:
     """Count number of fresh ingredients."""
-    # Prepare sorted ranges
-    ranges, _ = star09.parse_input(lines)
-    ranges.sort()
-
-    # Greedy
     ans = 0
     max_seen = -1
+    database.ranges.sort()
 
-    for lo, hi in ranges:
+    for lo, hi in database.ranges:
         ans += max(0, hi - max(lo, max_seen + 1) + 1)
         max_seen = max(max_seen, hi)
 
     return ans
 
 
-PARSER = inputs.parse_str_lines
+PARSER = star09.PARSER
 PRINTER = str

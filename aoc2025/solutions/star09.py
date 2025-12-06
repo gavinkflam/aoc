@@ -14,52 +14,42 @@ Solutions:
         - O(mlogm + nlogn + n) time, O(m + n) auxiliary space
 """
 
-from aoclibs import inputs
+from dataclasses import dataclass
+
+from aoclibs import inputs2
 
 
-def parse_input(lines: list[str]) -> tuple[list[tuple[int, int]], list[int]]:
-    """Parse inventory management system database input."""
-    i = 0
-    ranges, inventory = [], []
+@dataclass
+class InventoryDatabase:
+    """Data class to represent the parsed inventory database."""
 
-    # Parse fresh ingredient ranges
-    while len(lines[i]) > 0:
-        lo, hi = lines[i].split("-")
-        ranges.append((int(lo), int(hi)))
-        i += 1
-
-    # Parse available ingredient ids
-    i += 1
-
-    while i < len(lines):
-        inventory.append(int(lines[i]))
-        i += 1
-
-    return (ranges, inventory)
+    ranges: list[tuple[int, int]]
+    inventory: list[int]
 
 
-def run(lines: list[str]) -> int:
+def run(database: InventoryDatabase) -> int:
     """Count number of available fresh ingredients."""
     ans = 0
-
-    # Prepare sorted ranges and inventory
-    ranges, inventory = parse_input(lines)
-    ranges.sort()
-    inventory.sort()
+    database.ranges.sort()
+    database.inventory.sort()
 
     # Lookup freshness using two pointers
-    m = len(ranges)
+    m = len(database.ranges)
     i = 0
 
-    for query in inventory:
-        while i < m and ranges[i][1] < query:
+    for query in database.inventory:
+        while i < m and database.ranges[i][1] < query:
             i += 1
 
-        if i < m and ranges[i][0] <= query <= ranges[i][1]:
+        if i < m and database.ranges[i][0] <= query <= database.ranges[i][1]:
             ans += 1
 
     return ans
 
 
-PARSER = inputs.parse_str_lines
+PARSER = inputs2.compose(
+    inputs2.new_from_args(InventoryDatabase),
+    inputs2.split_zip_applyf("", inputs2.splitf("-", int), int),
+    str.splitlines,
+)
 PRINTER = str

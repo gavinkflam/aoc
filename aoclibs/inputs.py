@@ -1,4 +1,4 @@
-"""Helper functions related to input manipulation."""
+"""Helper functions to parse input file."""
 
 import re
 
