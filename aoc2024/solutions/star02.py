@@ -12,7 +12,7 @@ Solutions:
 
 from collections import Counter
 
-from aoclibs import inputs
+from aoc2024.solutions import star01
 
 
 def run(grid: list[list[int]]) -> int:
@@ -25,5 +25,5 @@ def run(grid: list[list[int]]) -> int:
     return product_sum
 
 
-PARSER = inputs.parse_int_grid
+PARSER = star01.PARSER
 PRINTER = str

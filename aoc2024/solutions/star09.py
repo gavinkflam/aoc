@@ -14,26 +14,26 @@ Solutions:
 """
 
 from collections import defaultdict
+from dataclasses import dataclass
 
-from aoclibs import inputs
+from aoclibs import inputs2
 
 
-def prepare_data(grid: list[list[int]]) -> tuple[dict[int, set[int]], list[list[int]]]:
-    """Prepare page rules and updates from the input grid."""
-    rules, updates = defaultdict(set), []
-    i = 0
+@dataclass
+class Instructions:
+    """Data class to represent the parsed instructions."""
 
-    while len(grid[i]) == 2:
-        x, y = grid[i]
-        rules[x].add(y)
-        i += 1
+    rules: list[list[int]]
+    updates: list[list[int]]
 
-    i += 1
-    while i < len(grid):
-        updates.append(grid[i])
-        i += 1
+    def group_rules_by_leader(self) -> dict[int, set[int]]:
+        """Return a dictionary of leader to a set of its followers."""
+        groups = defaultdict(set)
 
-    return (rules, updates)
+        for x, y in self.rules:
+            groups[x].add(y)
+
+        return groups
 
 
 def is_valid_update(rules: dict[int, set[int]], update: list[int]) -> bool:
@@ -50,17 +50,24 @@ def is_valid_update(rules: dict[int, set[int]], update: list[int]) -> bool:
     return True
 
 
-def run(grid: list[list[int]]) -> int:
+def run(instructions: Instructions) -> int:
     """Find valid updates, and sum up their middle page numbers."""
-    rules, updates = prepare_data(grid)
     mid_page_sum = 0
 
-    for update in updates:
-        if is_valid_update(rules, update):
+    for update in instructions.updates:
+        if is_valid_update(instructions.group_rules_by_leader(), update):
             mid_page_sum += update[len(update) // 2]
 
     return mid_page_sum
 
 
-PARSER = inputs.parse_int_grid_regexp
+PARSER = inputs2.compose(
+    inputs2.applyf(Instructions),
+    inputs2.zip_applyf(
+        inputs2.mapf(inputs2.compose(inputs2.mapf(int), inputs2.splitf("|"))),
+        inputs2.mapf(inputs2.compose(inputs2.mapf(int), inputs2.splitf(","))),
+    ),
+    inputs2.list_split(""),
+    str.splitlines,
+)
 PRINTER = str

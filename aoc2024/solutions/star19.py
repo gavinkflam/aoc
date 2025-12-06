@@ -8,7 +8,7 @@ Solutions:
         - O(mn * mn) time, O(mn) auxiliary space
 """
 
-from aoclibs import inputs
+from aoclibs import inputs2
 
 
 DIRECTIONS = [(-1, 0), (0, 1), (1, 0), (0, -1)]
@@ -51,5 +51,8 @@ def run(grid: list[list[int]]) -> int:
     return trailhead_scores
 
 
-PARSER = inputs.parse_digit_grid
+PARSER = inputs2.compose(
+    inputs2.mapf(inputs2.mapf(int)),
+    str.splitlines,
+)
 PRINTER = str

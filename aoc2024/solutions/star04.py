@@ -12,7 +12,7 @@ Solutions:
         - O(rows * cols) time, O(cols) auxiliary space
 """
 
-from aoclibs import inputs
+from aoc2024.solutions import star03
 
 
 def is_safe_report(report: list[int], direction: int) -> bool:
@@ -54,5 +54,5 @@ def run(grid: list[list[int]]) -> int:
     return safe_reports
 
 
-PARSER = inputs.parse_int_grid
+PARSER = star03.PARSER
 PRINTER = str

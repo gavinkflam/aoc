@@ -9,7 +9,9 @@ Solutions:
             where m = maximum number of numbers in an equation
 """
 
-from aoclibs import inputs
+import re
+
+from aoclibs import inputs2
 
 
 def is_valid_equation(equation: list[int], curr: int, i: int) -> bool:
@@ -23,16 +25,21 @@ def is_valid_equation(equation: list[int], curr: int, i: int) -> bool:
     return is_valid_equation(equation, curr - val, i - 1)
 
 
-def run(grid: list[list[int]]) -> int:
+def run(equations: list[list[int]]) -> int:
     """Find the sum of the valid equations."""
     valid_equations_sum = 0
 
-    for equation in grid:
+    for equation in equations:
         if is_valid_equation(equation, equation[0], len(equation) - 1):
             valid_equations_sum += equation[0]
 
     return valid_equations_sum
 
 
-PARSER = inputs.parse_int_grid_regexp
+PARSER = inputs2.compose(
+    inputs2.mapf(
+        inputs2.compose(inputs2.mapf(int), inputs2.re_splitf(re.compile(r"[:\s]+"))),
+    ),
+    str.splitlines,
+)
 PRINTER = str

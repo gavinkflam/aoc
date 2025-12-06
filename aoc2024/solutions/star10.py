@@ -15,16 +15,15 @@ Solutions:
 
 import functools
 
-from aoclibs import inputs
 from aoc2024.solutions import star09
 
 
-def run(grid: list[list[int]]) -> int:
+def run(instructions: star09.Instructions) -> int:
     """Find invalid updates, fix them, and sum up their middle page numbers."""
-    rules, updates = star09.prepare_data(grid)
     mid_page_sum = 0
+    rules = instructions.group_rules_by_leader()
 
-    for update in updates:
+    for update in instructions.updates:
         if not star09.is_valid_update(rules, update):
             fixed_update = sorted(
                 update,
@@ -35,5 +34,5 @@ def run(grid: list[list[int]]) -> int:
     return mid_page_sum
 
 
-PARSER = inputs.parse_int_grid_regexp
+PARSER = star09.PARSER
 PRINTER = str

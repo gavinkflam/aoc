@@ -8,13 +8,11 @@ Solutions:
         - O(1) time, O(1) auxiliary space
 """
 
-from aoclibs import inputs
 
-
-def run(_: list[str]) -> int:
+def run(_: str) -> int:
     """Happy 2025!"""
     return "*" * 50
 
 
-PARSER = inputs.parse_str_lines
+PARSER = str
 PRINTER = str

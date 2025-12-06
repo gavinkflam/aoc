@@ -50,7 +50,7 @@ def run(worksheet: Worksheet) -> int:
 
 
 PARSER = inputs2.compose(
-    inputs2.new_from_args(Worksheet),
+    inputs2.applyf(Worksheet),
     inputs2.zip_applyf(
         inputs2.mapf(
             inputs2.re_splitf(patterns.WHITESPACES, int, remove_empty_elements=True)
@@ -59,7 +59,7 @@ PARSER = inputs2.compose(
             inputs2.re_splitf(patterns.WHITESPACES, remove_empty_elements=True)
         ),
     ),
-    inputs2.list_split_but_n(1),
+    inputs2.split_but_n(1),
     str.splitlines,
 )
 PRINTER = str

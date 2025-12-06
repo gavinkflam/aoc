@@ -8,9 +8,6 @@ Solutions:
         - O(mn) time, O(1) auxiliary space
 """
 
-from aoclibs import inputs
-
-
 DIAGONAL_1 = [(-1, -1), (1, 1)]
 DIAGONAL_2 = [(-1, 1), (1, -1)]
 TARGETS = ["MS", "SM"]
@@ -49,5 +46,5 @@ def run(lines: list[str]) -> int:
     return counts
 
 
-PARSER = inputs.parse_str_lines
+PARSER = str.splitlines
 PRINTER = str

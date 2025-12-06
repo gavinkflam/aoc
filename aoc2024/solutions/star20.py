@@ -11,7 +11,6 @@ Solutions:
 """
 
 from aoc2024.solutions import star19
-from aoclibs import inputs
 
 
 def run(grid: list[list[int]]) -> int:
@@ -42,5 +41,5 @@ def run(grid: list[list[int]]) -> int:
     return trailhead_ratings
 
 
-PARSER = inputs.parse_digit_grid
+PARSER = star19.PARSER
 PRINTER = str

@@ -10,10 +10,9 @@ Solutions:
 """
 
 from aoc2024.solutions import star15
-from aoclibs import inputs
 
 
-def run(grid: list[list[str]]) -> int:
+def run(grid: list[str]) -> int:
     """Count the number of unique locations that contain an antinode."""
     rows, cols = len(grid), len(grid[0])
     antennas = star15.find_antennas(grid)
@@ -43,5 +42,5 @@ def run(grid: list[list[str]]) -> int:
     return len(antinodes)
 
 
-PARSER = inputs.parse_char_grid
+PARSER = str.splitlines
 PRINTER = str

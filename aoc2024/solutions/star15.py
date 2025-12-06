@@ -11,10 +11,8 @@ Solutions:
 
 from collections import defaultdict
 
-from aoclibs import inputs
 
-
-def find_antennas(grid: list[list[str]]) -> dict[str, list[tuple[int, int]]]:
+def find_antennas(grid: list[str]) -> dict[str, list[tuple[int, int]]]:
     """Find the locations of all antennas grouped by frequency."""
     rows, cols = len(grid), len(grid[0])
     antennas = defaultdict(list)
@@ -28,7 +26,7 @@ def find_antennas(grid: list[list[str]]) -> dict[str, list[tuple[int, int]]]:
     return antennas
 
 
-def run(grid: list[list[str]]) -> int:
+def run(grid: list[str]) -> int:
     """Count the number of unique locations that contain an antinode."""
     rows, cols = len(grid), len(grid[0])
     antennas = find_antennas(grid)
@@ -56,5 +54,5 @@ def run(grid: list[list[str]]) -> int:
     return len(antinodes)
 
 
-PARSER = inputs.parse_char_grid
+PARSER = str.splitlines
 PRINTER = str

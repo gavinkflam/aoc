@@ -48,7 +48,7 @@ def run(database: InventoryDatabase) -> int:
 
 
 PARSER = inputs2.compose(
-    inputs2.new_from_args(InventoryDatabase),
+    inputs2.applyf(InventoryDatabase),
     inputs2.zip_applyf(
         inputs2.mapf(inputs2.splitf("-", int)),
         inputs2.mapf(int),

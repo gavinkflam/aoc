@@ -10,7 +10,7 @@ Solutions:
         - O(mn) time, O(1) auxiliary space
 """
 
-from aoclibs import inputs
+from aoclibs import inputs2
 
 
 FACINGS = [(-1, 0), (0, 1), (1, 0), (0, -1)]
@@ -52,5 +52,5 @@ def run(grid: list[list[str]]) -> int:
     return visited_cells
 
 
-PARSER = inputs.parse_char_grid
+PARSER = inputs2.compose(inputs2.mapf(list), str.splitlines)
 PRINTER = str
