@@ -10,7 +10,6 @@ Solutions:
             1. Only try from the patrolling path
 """
 
-from aoclibs import inputs2
 from aoc2024.solutions import star11
 
 
@@ -74,5 +73,5 @@ def run(grid: list[list[str]]) -> int:
             row, col = nr, nc
 
 
-PARSER = inputs2.compose(inputs2.mapf(list), str.splitlines)
+PARSER = star11.PARSER
 PRINTER = str

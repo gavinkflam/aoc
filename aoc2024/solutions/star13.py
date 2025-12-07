@@ -9,9 +9,8 @@ Solutions:
             where m = maximum number of numbers in an equation
 """
 
-import re
-
-from aoclibs import inputs2
+from aoclibs import patterns
+from aoclibs.hofs import compose, mapf, re_mapf
 
 
 def is_valid_equation(equation: list[int], curr: int, i: int) -> bool:
@@ -36,10 +35,8 @@ def run(equations: list[list[int]]) -> int:
     return valid_equations_sum
 
 
-PARSER = inputs2.compose(
-    inputs2.mapf(
-        inputs2.compose(inputs2.mapf(int), inputs2.re_splitf(re.compile(r"[:\s]+"))),
-    ),
+PARSER = compose(
+    mapf(re_mapf(patterns.UNSIGNED_INT, int)),
     str.splitlines,
 )
 PRINTER = str

@@ -10,7 +10,7 @@ Solutions:
                   k = number of generations
 """
 
-from aoclibs import inputs2
+from aoclibs.hofs import compose, mapf
 
 
 MOD = 16777216
@@ -36,5 +36,5 @@ def run(secrets: list[int]) -> int:
     return evolve_sum
 
 
-PARSER = inputs2.compose(inputs2.mapf(int), str.splitlines)
+PARSER = compose(mapf(int), str.splitlines)
 PRINTER = str

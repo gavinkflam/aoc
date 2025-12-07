@@ -16,7 +16,7 @@ Solutions:
 
 import math
 
-from aoclibs import inputs2
+from aoclibs.hofs import str_splitf
 
 
 def blink(memo: dict[int, list[int]], stone: int, blinks: int) -> int:
@@ -48,5 +48,5 @@ def run(stones: list[int]) -> int:
     return sum(blink(memo, stone, 75) for stone in stones)
 
 
-PARSER = inputs2.splitf(" ", int)
+PARSER = str_splitf(" ", int)
 PRINTER = str

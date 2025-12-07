@@ -13,7 +13,7 @@ Solutions:
 
 from typing import Optional
 
-from aoclibs import inputs2
+from aoclibs.hofs import compose, mapf, seq_split, str_join, zip_applyf
 
 
 LEFT, UP, RIGHT, DOWN = 0, 1, 2, 3
@@ -91,13 +91,10 @@ def run(info: tuple[Grid, str]) -> int:
     return find_coordinate_sum(grid)
 
 
-PARSER = inputs2.compose(
+PARSER = compose(
     tuple,
-    inputs2.zip_applyf(
-        inputs2.mapf(list),
-        inputs2.str_joinf(),
-    ),
-    inputs2.list_split(""),
+    zip_applyf(mapf(list), str_join()),
+    seq_split(""),
     str.splitlines,
 )
 PRINTER = str

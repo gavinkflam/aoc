@@ -8,7 +8,8 @@ Solutions:
         - O(n) time, O(1) auxiliary space
 """
 
-from aoclibs import inputs2, outputs, patterns
+from aoclibs import patterns
+from aoclibs.hofs import compose, ith, mapf, re_mapf, seq_split, str_join, zip_applyf
 
 
 Executable = tuple[list[int], list[int]]
@@ -59,15 +60,13 @@ def run(executable: Executable) -> list[str]:
     return outputs_buffer
 
 
-PARSER = inputs2.compose(
+PARSER = compose(
     tuple,
-    inputs2.zip_applyf(
-        inputs2.mapf(
-            inputs2.compose(inputs2.ith(0), inputs2.re_mapf(patterns.UNSIGNED_INT, int))
-        ),
-        inputs2.compose(inputs2.re_mapf(patterns.UNSIGNED_INT, int), inputs2.ith(0)),
+    zip_applyf(
+        mapf(compose(ith(0), re_mapf(patterns.UNSIGNED_INT, int))),
+        compose(re_mapf(patterns.UNSIGNED_INT, int), ith(0)),
     ),
-    inputs2.list_split(""),
+    seq_split(""),
     str.splitlines,
 )
-PRINTER = outputs.stringify_list
+PRINTER = str_join(",")

@@ -13,7 +13,7 @@ Solutions:
 
 from aoc2024.solutions import star35
 from aoc2024.solutions.star35 import BYTE, SIZE, SPACE
-from aoclibs import outputs
+from aoclibs.hofs import str_join
 
 
 DIRECTIONS = [(-1, 0), (-1, -1), (0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1)]
@@ -83,4 +83,4 @@ def run(positions: list[list[int]]) -> list[int]:
 
 
 PARSER = star35.PARSER
-PRINTER = outputs.stringify_list
+PRINTER = str_join(",")

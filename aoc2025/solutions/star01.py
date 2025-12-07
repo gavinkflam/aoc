@@ -9,7 +9,7 @@ Solutions:
             where n = number of lines
 """
 
-from aoclibs import inputs2
+from aoclibs.hofs import compose, mapf, split_take_n, zip_applyf
 
 
 DIRECTIONS = {"L": -1, "R": 1}
@@ -28,10 +28,8 @@ def run(instructions: list[tuple[str, int]]) -> int:
     return zeros
 
 
-PARSER = inputs2.compose(
-    inputs2.mapf(
-        inputs2.compose(tuple, inputs2.zip_applyf(str, int), inputs2.split_take_n(1))
-    ),
+PARSER = compose(
+    mapf(compose(tuple, zip_applyf(str, int), split_take_n(1))),
     str.splitlines,
 )
 PRINTER = str

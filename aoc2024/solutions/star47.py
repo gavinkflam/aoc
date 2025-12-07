@@ -15,7 +15,7 @@ Solutions:
 from collections import defaultdict
 from dataclasses import dataclass
 
-from aoclibs import inputs2
+from aoclibs.hofs import compose, mapf, seq_split, str_splitf, zip_applyf
 
 
 InitialValue = dict[str, int]
@@ -124,16 +124,14 @@ def run(board: Board) -> int:
     return construct_output_from_z_wires(values)
 
 
-PARSER = inputs2.compose(
+PARSER = compose(
     Board.from_configuration,
     tuple,
-    inputs2.zip_applyf(
-        inputs2.mapf(
-            inputs2.compose(inputs2.zip_applyf(str, int), inputs2.splitf(": "))
-        ),
-        inputs2.mapf(inputs2.splitf(" ")),
+    zip_applyf(
+        mapf(compose(zip_applyf(str, int), str_splitf(": "))),
+        mapf(str_splitf(" ")),
     ),
-    inputs2.list_split(""),
+    seq_split(""),
     str.splitlines,
 )
 PRINTER = str

@@ -12,7 +12,7 @@ Solutions:
         - O(mn) time, O(1) auxiliary space
 """
 
-from aoclibs import inputs2
+from aoclibs.hofs import compose, mapf
 
 
 def run(banks: list[list[int]]) -> int:
@@ -36,5 +36,5 @@ def run(banks: list[list[int]]) -> int:
     return ans
 
 
-PARSER = inputs2.compose(inputs2.mapf(inputs2.mapf(int)), str.splitlines)
+PARSER = compose(mapf(mapf(int)), str.splitlines)
 PRINTER = str

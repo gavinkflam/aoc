@@ -13,7 +13,8 @@ Solutions:
 from dataclasses import dataclass
 from functools import reduce
 
-from aoclibs import inputs2, patterns
+from aoclibs import patterns
+from aoclibs.hofs import applyf, compose, mapf, re_splitf, split_but_n, zip_applyf
 
 
 @dataclass
@@ -49,17 +50,13 @@ def run(worksheet: Worksheet) -> int:
     return ans
 
 
-PARSER = inputs2.compose(
-    inputs2.applyf(Worksheet),
-    inputs2.zip_applyf(
-        inputs2.mapf(
-            inputs2.re_splitf(patterns.WHITESPACES, int, remove_empty_elements=True)
-        ),
-        inputs2.mapf(
-            inputs2.re_splitf(patterns.WHITESPACES, remove_empty_elements=True)
-        ),
+PARSER = compose(
+    applyf(Worksheet),
+    zip_applyf(
+        mapf(re_splitf(patterns.WHITESPACES, int, remove_empty_elements=True)),
+        mapf(re_splitf(patterns.WHITESPACES, remove_empty_elements=True)),
     ),
-    inputs2.split_but_n(1),
+    split_but_n(1),
     str.splitlines,
 )
 PRINTER = str

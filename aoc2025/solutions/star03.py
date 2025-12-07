@@ -14,7 +14,7 @@ Solutions:
 
 import math
 
-from aoclibs import inputs2
+from aoclibs.hofs import compose, mapf, str_splitf
 
 
 def run(ranges: list[list[str]]) -> int:
@@ -41,5 +41,5 @@ def run(ranges: list[list[str]]) -> int:
     return ans
 
 
-PARSER = inputs2.compose(inputs2.mapf(inputs2.splitf("-")), inputs2.splitf(","))
+PARSER = compose(mapf(str_splitf("-")), str_splitf(","))
 PRINTER = str

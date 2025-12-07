@@ -20,7 +20,7 @@ import re
 
 from aoc2024.solutions import star47
 from aoc2024.solutions.star47 import Board
-from aoclibs import outputs
+from aoclibs.hofs import str_join
 
 
 INPUT_BITS = 45
@@ -147,4 +147,4 @@ def run(board: Board) -> list[str]:
 
 
 PARSER = star47.PARSER
-PRINTER = outputs.stringify_list
+PRINTER = str_join(",")

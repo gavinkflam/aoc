@@ -15,7 +15,7 @@ Solutions:
 
 from collections import defaultdict
 
-from aoclibs import inputs2
+from aoclibs.hofs import compose, mapf, str_splitf
 
 
 AdjacencyList = dict[str, set[str]]
@@ -56,8 +56,8 @@ def run(pairs: list[tuple[str, str]]) -> int:
     return good_groups
 
 
-PARSER = inputs2.compose(
-    inputs2.mapf(inputs2.compose(tuple, inputs2.splitf("-"))),
+PARSER = compose(
+    mapf(compose(tuple, str_splitf("-"))),
     str.splitlines,
 )
 PRINTER = str

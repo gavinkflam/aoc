@@ -8,7 +8,8 @@ Solutions:
         - O(m * max(px, py)) time, O(1) auxiliary space
 """
 
-from aoclibs import inputs2, patterns
+from aoclibs import patterns
+from aoclibs.hofs import compose, mapf, re_mapf, seq_split
 
 
 def run(machines: list[list[list[int]]]) -> int:
@@ -33,11 +34,9 @@ def run(machines: list[list[list[int]]]) -> int:
     return total_costs
 
 
-PARSER = inputs2.compose(
-    inputs2.mapf(
-        inputs2.mapf(inputs2.re_mapf(patterns.UNSIGNED_INT, int)),
-    ),
-    inputs2.list_split(""),
+PARSER = compose(
+    mapf(mapf(re_mapf(patterns.UNSIGNED_INT, int))),
+    seq_split(""),
     str.splitlines,
 )
 PRINTER = str

@@ -16,7 +16,7 @@ Solutions:
 
 from dataclasses import dataclass
 
-from aoclibs import inputs2
+from aoclibs.hofs import applyf, compose, mapf, seq_split, str_splitf, zip_applyf
 
 
 @dataclass
@@ -47,13 +47,13 @@ def run(database: InventoryDatabase) -> int:
     return ans
 
 
-PARSER = inputs2.compose(
-    inputs2.applyf(InventoryDatabase),
-    inputs2.zip_applyf(
-        inputs2.mapf(inputs2.splitf("-", int)),
-        inputs2.mapf(int),
+PARSER = compose(
+    applyf(InventoryDatabase),
+    zip_applyf(
+        mapf(str_splitf("-", int)),
+        mapf(int),
     ),
-    inputs2.list_split(""),
+    seq_split(""),
     str.splitlines,
 )
 PRINTER = str

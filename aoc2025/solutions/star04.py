@@ -12,7 +12,7 @@ Solutions:
         - O(n * (10 ** (log10(m) / 2))) time, O(m) auxiliary space
 """
 
-from aoclibs import inputs2
+from aoc2025.solutions import star03
 
 
 def run(ranges: list[list[str]]) -> int:
@@ -47,5 +47,5 @@ def run(ranges: list[list[str]]) -> int:
     return ans
 
 
-PARSER = inputs2.compose(inputs2.mapf(inputs2.splitf("-")), inputs2.splitf(","))
+PARSER = star03.PARSER
 PRINTER = str

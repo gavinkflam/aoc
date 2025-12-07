@@ -12,7 +12,6 @@ Solutions:
         - O(mn) time, O(mn) auxiliary space
 """
 
-from aoclibs import inputs2
 from aoc2025.solutions import star07
 
 
@@ -52,5 +51,5 @@ def run(grid: list[list[str]]) -> int:
     return removed
 
 
-PARSER = inputs2.compose(inputs2.mapf(list), str.splitlines)
+PARSER = star07.PARSER
 PRINTER = str

@@ -10,7 +10,7 @@ Solutions:
                   n = number of keys
 """
 
-from aoclibs import inputs2
+from aoclibs.hofs import compose, seq_split
 
 
 Pins = list[int]
@@ -54,5 +54,5 @@ def run(blocks: list[list[str]]) -> int:
     return fits
 
 
-PARSER = inputs2.compose(inputs2.list_split(""), str.splitlines)
+PARSER = compose(seq_split(""), str.splitlines)
 PRINTER = str

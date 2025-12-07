@@ -10,7 +10,7 @@ Solutions:
         - O(nlogn) time, O(n) auxiliary space
 """
 
-from aoclibs import inputs2
+from aoclibs.hofs import compose, mapf, str_splitf
 
 
 def run(grid: list[list[int]]) -> int:
@@ -26,8 +26,8 @@ def run(grid: list[list[int]]) -> int:
     return diff_sum
 
 
-PARSER = inputs2.compose(
-    inputs2.mapf(inputs2.compose(inputs2.mapf(int), inputs2.splitf("   "))),
+PARSER = compose(
+    mapf(compose(mapf(int), str_splitf("   "))),
     str.splitlines,
 )
 PRINTER = str

@@ -16,7 +16,7 @@ Solutions:
 from collections import defaultdict
 from dataclasses import dataclass
 
-from aoclibs import inputs2
+from aoclibs.hofs import applyf, compose, mapf, seq_split, str_splitf, zip_applyf
 
 
 @dataclass
@@ -61,13 +61,13 @@ def run(instructions: Instructions) -> int:
     return mid_page_sum
 
 
-PARSER = inputs2.compose(
-    inputs2.applyf(Instructions),
-    inputs2.zip_applyf(
-        inputs2.mapf(inputs2.compose(inputs2.mapf(int), inputs2.splitf("|"))),
-        inputs2.mapf(inputs2.compose(inputs2.mapf(int), inputs2.splitf(","))),
+PARSER = compose(
+    applyf(Instructions),
+    zip_applyf(
+        mapf(compose(mapf(int), str_splitf("|"))),
+        mapf(compose(mapf(int), str_splitf(","))),
     ),
-    inputs2.list_split(""),
+    seq_split(""),
     str.splitlines,
 )
 PRINTER = str

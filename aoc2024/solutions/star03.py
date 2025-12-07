@@ -8,7 +8,7 @@ Solutions:
         - O(rows * cols) time, O(1) auxiliary space
 """
 
-from aoclibs import inputs2
+from aoclibs.hofs import compose, mapf, str_splitf
 
 
 def is_safe_report(report: list[int]) -> bool:
@@ -36,8 +36,8 @@ def run(grid: list[list[int]]) -> int:
     return safe_reports
 
 
-PARSER = inputs2.compose(
-    inputs2.mapf(inputs2.compose(inputs2.mapf(int), inputs2.splitf(" "))),
+PARSER = compose(
+    mapf(compose(mapf(int), str_splitf(" "))),
     str.splitlines,
 )
 PRINTER = str

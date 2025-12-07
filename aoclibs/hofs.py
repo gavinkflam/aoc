@@ -1,7 +1,7 @@
-"""Version 2 composable helper functions to parse input files."""
+"""Reusable higher order functions for handling solution inputs and outputs."""
 
 from functools import reduce
-from typing import Any, Callable, Iterable, Pattern, Sequence
+from typing import Any, Callable, Pattern, Sequence
 
 
 def identity(x: Any) -> Any:
@@ -29,9 +29,20 @@ def mapf(fn: Callable) -> Callable[[Any], list[Any]]:
     return lambda ls: [fn(x) for x in ls]
 
 
-def splitf(sep: str, fn: Callable = identity) -> Callable[[str], list[Any]]:
+def zip_applyf(*functions: Callable) -> Callable[[Any], list[list[Any]]]:
+    """Return a function that accept a list,
+    apply functions of the corresponding index to each element."""
+    return lambda ls: [functions[i](x) for i, x in enumerate(ls)]
+
+
+def str_splitf(sep: str, fn: Callable = identity) -> Callable[[str], list[Any]]:
     """Return a function that accept a string, to split the string by sep and apply fn."""
     return lambda s: [fn(x) for x in s.split(sep)]
+
+
+def str_join(sep: str = "") -> Callable[[Sequence[Any]], str]:
+    """Return a function that accept a sequence, to join the elements with sep."""
+    return lambda xs: sep.join(str(x) for x in xs)
 
 
 def re_splitf(
@@ -48,15 +59,10 @@ def re_mapf(pattern: Pattern, fn: Callable = identity) -> Callable[[str], list[A
     return lambda s: [fn(x) for x in pattern.findall(s)]
 
 
-def str_joinf(sep: str = "") -> Callable[[Iterable[Any]], str]:
-    """Return a function that accept an iterable, to join the elements with sep."""
-    return lambda xs: sep.join(str(x) for x in xs)
+def seq_split(sep: Any) -> Callable[[Sequence[Any]], list[list[Any]]]:
+    """Return a function that accept a sequence, to split it into chunks by sep."""
 
-
-def list_split(sep: Any) -> Callable[[Any], list[list[Any]]]:
-    """Return a function that accept a list, to split it by sep."""
-
-    def inner(ls: list[Any]) -> list[list[Any]]:
+    def inner(ls: Sequence[Any]) -> list[list[Any]]:
         parts, part = [[]], 0
 
         for e in ls:
@@ -81,9 +87,3 @@ def split_but_n(n: int) -> Callable[[Sequence], list[Sequence]]:
     """Return a function that accept a sequence,
     to split it into two parts with a second part of length n."""
     return lambda ls: [ls[: len(ls) - n], ls[len(ls) - n :]]
-
-
-def zip_applyf(*functions: Callable) -> Callable[[Any], list[list[Any]]]:
-    """Return a function that accept a list,
-    apply functions of the corresponding index to each element."""
-    return lambda ls: [functions[i](x) for i, x in enumerate(ls)]

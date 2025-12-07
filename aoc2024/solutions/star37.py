@@ -17,7 +17,7 @@ Solutions:
 
 from dataclasses import dataclass, field
 
-from aoclibs import inputs2
+from aoclibs.hofs import compose, identity, ith, seq_split, str_splitf, zip_applyf
 
 
 @dataclass
@@ -94,13 +94,13 @@ def run(info: tuple[list[str], list[str]]) -> int:
     return possible_designs
 
 
-PARSER = inputs2.compose(
+PARSER = compose(
     tuple,
-    inputs2.zip_applyf(
-        inputs2.compose(inputs2.splitf(", "), inputs2.ith(0)),
-        inputs2.identity,
+    zip_applyf(
+        compose(str_splitf(", "), ith(0)),
+        identity,
     ),
-    inputs2.list_split(""),
+    seq_split(""),
     str.splitlines,
 )
 PRINTER = str

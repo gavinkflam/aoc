@@ -13,7 +13,7 @@ Solutions:
 
 import math
 
-from aoclibs import inputs2
+from aoclibs.hofs import str_splitf
 
 
 def run(stones: list[int]) -> int:
@@ -38,5 +38,5 @@ def run(stones: list[int]) -> int:
     return len(stones)
 
 
-PARSER = inputs2.splitf(" ", int)
+PARSER = str_splitf(" ", int)
 PRINTER = str

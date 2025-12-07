@@ -18,7 +18,7 @@ Solutions:
 from dataclasses import dataclass
 from typing import Optional
 
-from aoclibs import inputs2
+from aoc2025.solutions import star05
 
 
 @dataclass
@@ -75,5 +75,5 @@ def run(banks: list[list[int]]) -> int:
     return ans
 
 
-PARSER = inputs2.compose(inputs2.mapf(inputs2.mapf(int)), str.splitlines)
+PARSER = star05.PARSER
 PRINTER = str
