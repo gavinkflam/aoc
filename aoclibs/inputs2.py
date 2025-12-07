@@ -1,7 +1,7 @@
 """Version 2 composable helper functions to parse input files."""
 
 from functools import reduce
-from typing import Any, Callable, Pattern, Sequence
+from typing import Any, Callable, Iterable, Pattern, Sequence
 
 
 def identity(x: Any) -> Any:
@@ -46,6 +46,11 @@ def re_splitf(
 def re_mapf(pattern: Pattern, fn: Callable = identity) -> Callable[[str], list[Any]]:
     """Return a function that accept a string, to apply fn to each match of pattern."""
     return lambda s: [fn(x) for x in pattern.findall(s)]
+
+
+def str_joinf(sep: str = "") -> Callable[[Iterable[Any]], str]:
+    """Return a function that accept an iterable, to join the elements with sep."""
+    return lambda xs: sep.join(str(x) for x in xs)
 
 
 def list_split(sep: Any) -> Callable[[Any], list[list[Any]]]:

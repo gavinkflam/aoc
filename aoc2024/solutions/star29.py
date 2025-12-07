@@ -13,7 +13,7 @@ Solutions:
 
 from typing import Optional
 
-from aoclibs import inputs
+from aoclibs import inputs2
 
 
 LEFT, UP, RIGHT, DOWN = 0, 1, 2, 3
@@ -23,30 +23,6 @@ DIRECTIONS = [(0, -1), (-1, 0), (0, 1), (1, 0)]
 
 Grid = list[list[str]]
 Coord = tuple[int, int]
-
-
-def parse_input(lines: Grid) -> tuple[Grid, Coord, list[str]]:
-    """Parse input into grid and actions."""
-    grid, actions, robot = [], [], None
-    n, i = len(lines), 0
-
-    # Construct grid
-    while len(lines[i]) > 0:
-        try:
-            robot = (i, lines[i].index("@"))
-        except ValueError:
-            pass
-
-        grid.append(lines[i])
-        i += 1
-    i += 1
-
-    # Construct actions
-    while i < n:
-        actions.extend(ARROW_DIRECTIONS[arrow] for arrow in lines[i])
-        i += 1
-
-    return (grid, robot, actions)
 
 
 def find_coordinate_sum(grid: Grid) -> int:
@@ -62,6 +38,18 @@ def find_coordinate_sum(grid: Grid) -> int:
     return coordinate_sum
 
 
+def find_robot(grid: Grid) -> Coord:
+    """Find the coordinate of the robot."""
+    rows, cols = len(grid), len(grid[0])
+
+    for row in range(rows):
+        for col in range(cols):
+            if grid[row][col] == "@":
+                return (row, col)
+
+    raise ValueError("Cannot find the coordinate of the robot.")
+
+
 def find_space(grid: Grid, nr: int, nc: int, dr: int, dc: int) -> Optional[Coord]:
     """Find the next space in the given direction."""
     while grid[nr][nc] != "#":
@@ -72,9 +60,11 @@ def find_space(grid: Grid, nr: int, nc: int, dr: int, dc: int) -> Optional[Coord
     return None
 
 
-def run(lines: Grid) -> int:
+def run(info: tuple[Grid, str]) -> int:
     """Find the coordinates of boxes after the robot finished moving."""
-    grid, (row, col), actions = parse_input(lines)
+    grid, action_strs = info
+    row, col = find_robot(grid)
+    actions = [ARROW_DIRECTIONS[arrow] for arrow in action_strs]
 
     # Simulation
     for action in actions:
@@ -101,5 +91,13 @@ def run(lines: Grid) -> int:
     return find_coordinate_sum(grid)
 
 
-PARSER = inputs.parse_char_grid
+PARSER = inputs2.compose(
+    tuple,
+    inputs2.zip_applyf(
+        inputs2.mapf(list),
+        inputs2.str_joinf(),
+    ),
+    inputs2.list_split(""),
+    str.splitlines,
+)
 PRINTER = str

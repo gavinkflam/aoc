@@ -12,40 +12,37 @@ Solutions:
 """
 
 from aoc2024.solutions import star29
-from aoc2024.solutions.star29 import DIRECTIONS, LEFT, RIGHT, Coord, Grid
-from aoclibs import inputs
+from aoc2024.solutions.star29 import (
+    ARROW_DIRECTIONS,
+    DIRECTIONS,
+    LEFT,
+    RIGHT,
+    Coord,
+    Grid,
+)
 
 
-def parse_input(lines: list[list[str]]) -> tuple[Grid, Coord, list[str]]:
-    """Parse input into grid and actions."""
-    grid, actions, robot = [], [], None
-    n, cols, i = len(lines), len(lines[0]), 0
+def expand_grid(grid: Grid) -> Grid:
+    """Expand the given grid to be twice as wide."""
+    cols = len(grid[0])
+    expanded_grid = []
 
-    # Construct grid
-    while len(lines[i]) > 0:
-        line = []
+    for line in grid:
+        expanded_line = []
 
         for col in range(cols):
-            if lines[i][col] == ".":
-                line.extend([".", "."])
-            elif lines[i][col] == "#":
-                line.extend(["#", "#"])
-            elif lines[i][col] == "O":
-                line.extend(["[", "]"])
-            elif lines[i][col] == "@":
-                robot = (i, col * 2)
-                line.extend(["@", "."])
+            if line[col] == ".":
+                expanded_line.extend([".", "."])
+            elif line[col] == "#":
+                expanded_line.extend(["#", "#"])
+            elif line[col] == "O":
+                expanded_line.extend(["[", "]"])
+            elif line[col] == "@":
+                expanded_line.extend(["@", "."])
 
-        grid.append(line)
-        i += 1
-    i += 1
+        expanded_grid.append(expanded_line)
 
-    # Construct actions
-    while i < n:
-        actions.extend(star29.ARROW_DIRECTIONS[arrow] for arrow in lines[i])
-        i += 1
-
-    return (grid, robot, actions)
+    return expanded_grid
 
 
 def push_horizontally(
@@ -108,9 +105,13 @@ def push_vertically(
     return True
 
 
-def run(lines: Grid) -> int:
+def run(info: tuple[Grid, str]) -> int:
     """Find the coordinates of boxes after the robot finished moving."""
-    grid, (row, col), actions = parse_input(lines)
+    grid, action_strs = info
+    grid = expand_grid(grid)
+
+    row, col = star29.find_robot(grid)
+    actions = [ARROW_DIRECTIONS[arrow] for arrow in action_strs]
 
     for action in actions:
         dr, dc = DIRECTIONS[action]
@@ -134,5 +135,5 @@ def run(lines: Grid) -> int:
     return star29.find_coordinate_sum(grid)
 
 
-PARSER = inputs.parse_char_grid
+PARSER = star29.PARSER
 PRINTER = str

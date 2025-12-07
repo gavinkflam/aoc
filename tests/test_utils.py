@@ -16,6 +16,6 @@ def test_solutions(year: int, stars: int):
         expected = files.data_file_content(year, "star", star, path_prefix="/tests")
         assert (
             answer == expected
-        ), f"{year} start {star_text}: expected {expected}, got {answer}"
+        ), f"{year} star {star_text}: expected {expected}, got {answer}"
 
         print(f"{year} star {star_text}: correct, took {took_ms}ms", flush=True)

@@ -8,25 +8,18 @@ Solutions:
         - O(n) time, O(1) auxiliary space
 """
 
-from aoclibs import inputs, outputs
+from aoclibs import inputs2, outputs, patterns
 
 
-Executable = tuple[int, int, int, list[int]]
+Executable = tuple[list[int], list[int]]
 ADV, BXL, BST, JNZ, BXC, OUT, BDV, CDV = range(8)
 LITERAL_0, LITERAL_1, LITERAL_2, LITERAL_3 = range(4)
 COMBO_REG_A, COMBO_REG_B, COMBO_REG_C, RESERVED = range(4, 8)
 
 
-def parse_input(lists: list[list[int]]) -> Executable:
-    """Extract register values and program from the inputs."""
-    a, b, c = lists[0][0], lists[1][0], lists[2][0]
-    program = lists[4]
-    return (a, b, c, program)
-
-
-def interpret_program(executable: Executable) -> list[str]:
+def run(executable: Executable) -> list[str]:
     """Interpret the given program and derive its outputs."""
-    a, b, c, program = executable
+    [a, b, c], program = executable
     ip, n, outputs_buffer = 0, len(program), []
 
     def combo_value(operand: int) -> int:
@@ -66,11 +59,15 @@ def interpret_program(executable: Executable) -> list[str]:
     return outputs_buffer
 
 
-def run(lists: list[list[int]]) -> list[str]:
-    """Interpret the given program and derive its outputs."""
-    executable = parse_input(lists)
-    return interpret_program(executable)
-
-
-PARSER = inputs.parse_int_grid_regexp
+PARSER = inputs2.compose(
+    tuple,
+    inputs2.zip_applyf(
+        inputs2.mapf(
+            inputs2.compose(inputs2.ith(0), inputs2.re_mapf(patterns.UNSIGNED_INT, int))
+        ),
+        inputs2.compose(inputs2.re_mapf(patterns.UNSIGNED_INT, int), inputs2.ith(0)),
+    ),
+    inputs2.list_split(""),
+    str.splitlines,
+)
 PRINTER = outputs.stringify_list

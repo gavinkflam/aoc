@@ -16,12 +16,12 @@ Solutions:
 from typing import Optional
 
 from aoc2024.solutions import star33
-from aoclibs import inputs
+from aoc2024.solutions.star33 import Executable
 
 
-def run(lists: list[list[int]]) -> int:
+def run(executable: Executable) -> int:
     """Find the lowest value of register A for the program to output itself."""
-    _, b, c, program = star33.parse_input(lists)
+    [_, b, c], program = executable
 
     def outputs_match(outputs_buffer: list[int], lo: int) -> bool:
         for i, val in enumerate(outputs_buffer):
@@ -35,7 +35,7 @@ def run(lists: list[list[int]]) -> int:
 
         for inc in range(32768):
             try_a = (a << 3) + inc
-            outputs_buffer = star33.interpret_program((try_a, b, c, program))
+            outputs_buffer = star33.run(([try_a, b, c], program))
 
             if outputs_match(outputs_buffer, lo):
                 answer = backtrack(try_a, lo - 1)
@@ -47,5 +47,5 @@ def run(lists: list[list[int]]) -> int:
     return backtrack(0, len(program) - 1)
 
 
-PARSER = inputs.parse_int_grid_regexp
+PARSER = star33.PARSER
 PRINTER = str
