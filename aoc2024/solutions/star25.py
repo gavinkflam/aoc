@@ -8,28 +8,15 @@ Solutions:
         - O(m * max(px, py)) time, O(1) auxiliary space
 """
 
-from aoclibs import inputs
+from aoclibs import inputs2, patterns
 
 
-def parse_data(grid: list[list[int]], adjustment: int = 0) -> list[list[int]]:
-    """Parse the given input into specifications of each machine."""
-    n = len(grid)
-    machines = []
-
-    for i in range(0, n, 4):
-        machine = [grid[i][0], grid[i][1], grid[i + 1][0], grid[i + 1][1]]
-        machine += [adjustment + grid[i + 2][0], adjustment + grid[i + 2][1]]
-        machines.append(machine)
-
-    return machines
-
-
-def run(grid: list[list[int]]) -> int:
+def run(machines: list[list[list[int]]]) -> int:
     """Find the lowest costs to win all winnable prizes."""
-    machines = parse_data(grid)
     total_costs = 0
 
-    for ax, ay, bx, by, px, py in machines:
+    for machine in machines:
+        [ax, ay], [bx, by], [px, py] = machine
         cost = 0
 
         while px > 0 and py > 0:
@@ -46,5 +33,11 @@ def run(grid: list[list[int]]) -> int:
     return total_costs
 
 
-PARSER = inputs.parse_int_grid_regexp
+PARSER = inputs2.compose(
+    inputs2.mapf(
+        inputs2.mapf(inputs2.re_mapf(patterns.UNSIGNED_INT, int)),
+    ),
+    inputs2.list_split(""),
+    str.splitlines,
+)
 PRINTER = str

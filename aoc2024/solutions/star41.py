@@ -13,8 +13,6 @@ Solutions:
 from functools import partial
 from typing import Callable
 
-from aoclibs import inputs
-
 
 NUMPAD_COORDS = {
     "7": (0, 0),
@@ -111,5 +109,5 @@ def run(codes: list[str]) -> int:
     return complexity_sum
 
 
-PARSER = inputs.parse_str_lines
+PARSER = str.splitlines
 PRINTER = str

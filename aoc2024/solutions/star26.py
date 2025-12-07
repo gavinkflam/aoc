@@ -14,16 +14,14 @@ from fractions import Fraction
 from typing import Optional
 
 from aoc2024.solutions import star25
-from aoclibs import inputs
 
 
 ADJUSTMENT = 10000000000000
 
 
-def solve(formula: tuple[int, int, int, int, int, int]) -> Optional[tuple[int, int]]:
+def solve(formula: list[int]) -> Optional[tuple[int, int]]:
     """Return a solution if a and b are both positive integers."""
     ax, ay, bx, by, px, py = formula
-
     ratio = Fraction(-(bx * py - by * px), (ax * py - ay * px))
     b = Fraction(px, (ax * ratio + bx))
     a = b * ratio
@@ -33,13 +31,13 @@ def solve(formula: tuple[int, int, int, int, int, int]) -> Optional[tuple[int, i
     return (int(a), int(b))
 
 
-def run(grid: list[list[int]]) -> int:
+def run(machines: list[list[list[int]]]) -> int:
     """Find the lowest costs to win all winnable prizes."""
-    machines = star25.parse_data(grid, adjustment=ADJUSTMENT)
     total_costs = 0
 
     for machine in machines:
-        solution = solve(machine)
+        [ax, ay], [bx, by], [px, py] = machine
+        solution = solve([ax, ay, bx, by, px + ADJUSTMENT, py + ADJUSTMENT])
 
         if solution:
             a, b = solution
@@ -48,5 +46,5 @@ def run(grid: list[list[int]]) -> int:
     return total_costs
 
 
-PARSER = inputs.parse_int_grid_regexp
+PARSER = star25.PARSER
 PRINTER = str

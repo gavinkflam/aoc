@@ -20,7 +20,7 @@ import re
 
 from aoc2024.solutions import star47
 from aoc2024.solutions.star47 import Board
-from aoclibs import inputs, outputs
+from aoclibs import outputs
 
 
 INPUT_BITS = 45
@@ -140,13 +140,11 @@ def find_bad_wires(board: Board) -> list[str]:
     return list(bad_wires)
 
 
-def run(lines: list[str]) -> list[str]:
+def run(board: Board) -> list[str]:
     """Find the gates that have their outputs swapped."""
-    board = star47.parse_inputs(lines)
     bad_wires = find_bad_wires(board)
-
     return sorted(bad_wires)
 
 
-PARSER = inputs.parse_str_lines
+PARSER = star47.PARSER
 PRINTER = outputs.stringify_list

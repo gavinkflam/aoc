@@ -10,31 +10,21 @@ Solutions:
                   n = number of keys
 """
 
-from aoclibs import inputs
+from aoclibs import inputs2
 
 
 Pins = list[int]
 
 
-def pin_height(lines: list[str], start_line: int, column: int) -> int:
-    """Find the height of the required pin."""
-    pounds = 0
-
-    for i in range(7):
-        if lines[start_line + i][column] == "#":
-            pounds += 1
-
-    return pounds - 1
-
-
-def parse_inputs(lines: list[str]) -> tuple[list[Pins], list[Pins]]:
-    """Parse the inputs into locks and keys."""
+def parse_blocks(blocks: list[list[str]]) -> tuple[list[Pins], list[Pins]]:
+    """Parse the blocks into locks and keys."""
     locks, keys = [], []
+    columns = len(blocks[0][0])
 
-    for i in range(0, len(lines), 8):
-        pins = [pin_height(lines, i, column) for column in range(5)]
+    for block in blocks:
+        pins = [[s[col] for s in block].count("#") - 1 for col in range(columns)]
 
-        if lines[i][0] == "#":
+        if block[0][0] == "#":
             locks.append(pins)
         else:
             keys.append(pins)
@@ -51,9 +41,9 @@ def have_overlaps(lock: Pins, key: Pins) -> bool:
     return False
 
 
-def run(lines: list[str]) -> int:
+def run(blocks: list[list[str]]) -> int:
     """Find the number of lock and key pairs that fit together without overlaps."""
-    locks, keys = parse_inputs(lines)
+    locks, keys = parse_blocks(blocks)
     fits = 0
 
     for lock in locks:
@@ -64,5 +54,5 @@ def run(lines: list[str]) -> int:
     return fits
 
 
-PARSER = inputs.parse_str_lines
+PARSER = inputs2.compose(inputs2.list_split(""), str.splitlines)
 PRINTER = str

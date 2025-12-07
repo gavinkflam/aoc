@@ -10,7 +10,7 @@ Solutions:
         - O(mn) time, O(mn) auxiliary space
 """
 
-from aoclibs import inputs
+from aoclibs import inputs2
 
 
 SIZE = 71
@@ -61,5 +61,8 @@ def run(positions: list[list[int]]) -> int:
     return steps_to_reach_exit(grid)
 
 
-PARSER = inputs.parse_int_grid_regexp
+PARSER = inputs2.compose(
+    inputs2.mapf(inputs2.splitf(",", int)),
+    str.splitlines,
+)
 PRINTER = str

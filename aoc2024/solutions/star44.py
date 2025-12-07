@@ -15,7 +15,6 @@ Solutions:
 from collections import defaultdict, deque
 
 from aoc2024.solutions import star43
-from aoclibs import inputs
 
 
 def hash_key(sequence: list[int]) -> int:
@@ -54,5 +53,5 @@ def run(secrets: list[int]) -> int:
     return max_bananas
 
 
-PARSER = inputs.parse_int_line
+PARSER = star43.PARSER
 PRINTER = str

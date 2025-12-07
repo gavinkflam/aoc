@@ -13,14 +13,12 @@ Solutions:
 import heapq
 from typing import Optional
 
-from aoclibs import inputs
-
 
 EAST, SOUTH, WEST, NORTH = 0, 1, 2, 3
 DIRECTIONS = [(0, 1), (1, 0), (0, -1), (-1, 0)]
 
 
-def find_cell(maze: list[list[str]], target: str) -> Optional[tuple[int, int]]:
+def find_cell(maze: list[str], target: str) -> Optional[tuple[int, int]]:
     """Find the target cell in the maze."""
     rows, cols = len(maze), len(maze[0])
 
@@ -65,5 +63,5 @@ def run(maze: list[list[str]]) -> int:
     return find_best_path(maze)
 
 
-PARSER = inputs.parse_char_grid
+PARSER = str.splitlines
 PRINTER = str

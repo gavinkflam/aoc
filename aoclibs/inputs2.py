@@ -4,9 +4,19 @@ from functools import reduce
 from typing import Any, Callable, Pattern, Sequence
 
 
+def identity(x: Any) -> Any:
+    """Return the argument without modifications."""
+    return x
+
+
 def compose(*functions: Callable) -> Callable[[str], Any]:
     """Compose the provided functions into a single function."""
     return lambda arg: reduce(lambda acc, f: f(acc), reversed(functions), arg)
+
+
+def ith(i: int) -> Callable[[Sequence[Any]], Any]:
+    """Return a function that accept an argument and return the ith element of it."""
+    return lambda xs: xs[i]
 
 
 def applyf(fn: Callable) -> Callable[[list[Any]], Any]:
@@ -19,18 +29,23 @@ def mapf(fn: Callable) -> Callable[[Any], list[Any]]:
     return lambda ls: [fn(x) for x in ls]
 
 
-def splitf(sep: str, fn: Callable = str) -> Callable[[str], list[Any]]:
+def splitf(sep: str, fn: Callable = identity) -> Callable[[str], list[Any]]:
     """Return a function that accept a string, to split the string by sep and apply fn."""
     return lambda s: [fn(x) for x in s.split(sep)]
 
 
 def re_splitf(
-    pattern: Pattern, fn: Callable = str, remove_empty_elements=False
+    pattern: Pattern, fn: Callable = identity, remove_empty_elements=False
 ) -> Callable[[str], list[Any]]:
     """Return a function that accept a string, to split the string using pattern and apply fn."""
     return lambda s: [
         fn(x) for x in pattern.split(s) if not (remove_empty_elements and x == "")
     ]
+
+
+def re_mapf(pattern: Pattern, fn: Callable = identity) -> Callable[[str], list[Any]]:
+    """Return a function that accept a string, to apply fn to each match of pattern."""
+    return lambda s: [fn(x) for x in pattern.findall(s)]
 
 
 def list_split(sep: Any) -> Callable[[Any], list[list[Any]]]:

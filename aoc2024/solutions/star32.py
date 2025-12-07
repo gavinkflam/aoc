@@ -15,13 +15,12 @@ import heapq
 
 from aoc2024.solutions import star31
 from aoc2024.solutions.star31 import DIRECTIONS, EAST
-from aoclibs import inputs
 
 
 UNVISITED = 1 << 32 - 1
 
 
-def find_best_paths(maze: list[list[str]]) -> list[list[list[int]]]:
+def find_best_paths(maze: list[str]) -> list[list[list[int]]]:
     """Use Dijkstra's algorithm to find the best paths to finish the maze."""
     rows, cols = len(maze), len(maze[0])
     sr, sc = star31.find_cell(maze, target="S")
@@ -105,5 +104,5 @@ def run(maze: list[list[str]]) -> int:
     return count_good_spots(maze, scores)
 
 
-PARSER = inputs.parse_char_grid
+PARSER = str.splitlines
 PRINTER = str

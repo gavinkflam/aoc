@@ -23,7 +23,6 @@ from typing import NamedTuple
 
 from aoc2024.solutions import star45
 from aoc2024.solutions.star45 import AdjacencyList
-from aoclibs import inputs
 
 
 Group = NamedTuple("Group", [("leader", str), ("members", set[str])])
@@ -41,9 +40,8 @@ def build_group(adj_list: AdjacencyList, *members: str) -> tuple[str, Group]:
     return (signature, Group(leader, set(members)))
 
 
-def run(lines: list[str]) -> str:
+def run(pairs: list[tuple[str, str]]) -> str:
     """Find the members of the largest interconnected group of computers."""
-    pairs = star45.split_pairs(lines)
     adj_list = star45.build_adjacency_list(pairs)
     n = len(adj_list)
 
@@ -72,5 +70,5 @@ def run(lines: list[str]) -> str:
     return next(iter(groups))
 
 
-PARSER = inputs.parse_str_lines
+PARSER = star45.PARSER
 PRINTER = str

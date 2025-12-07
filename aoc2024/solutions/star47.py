@@ -13,21 +13,43 @@ Solutions:
 """
 
 from collections import defaultdict
-from typing import NamedTuple
+from dataclasses import dataclass
 
-from aoclibs import inputs
+from aoclibs import inputs2
 
 
-Board = NamedTuple(
-    "Board",
-    [
-        ("initial_values", dict[str, int]),
-        ("logics", dict[str, str]),
-        ("adj_list", dict[str, set[str]]),
-        ("inputs_to", dict[str, list[str]]),
-        ("in_degrees", dict[str, int]),
-    ],
-)
+InitialValue = dict[str, int]
+Wire = list[str]
+BoardConfiguration = tuple[list[InitialValue], list[Wire]]
+
+
+@dataclass
+class Board:
+    """A dataclass to represent a board with logical gates and wires."""
+
+    initial_values: dict[str, int]
+    logics: dict[str, str]
+    adj_list: dict[str, set[str]]
+    inputs_to: dict[str, list[str]]
+    in_degrees: dict[str, int]
+
+    @classmethod
+    def from_configuration(cls, config: BoardConfiguration) -> "Board":
+        """Make a board from the provided board configuration."""
+        initial_values, wires = dict(config[0]), config[1]
+        logics, adj_list, inputs_to = {}, defaultdict(set), defaultdict(list)
+        indegrees = defaultdict(int)
+
+        for input1, fn, input2, _, output in wires:
+            logics[output] = fn
+            adj_list[input1].add(output)
+            adj_list[input2].add(output)
+
+            inputs_to[output].append(input1)
+            inputs_to[output].append(input2)
+            indegrees[output] += 2
+
+        return Board(initial_values, logics, adj_list, inputs_to, indegrees)
 
 
 def and_gate(x: int, y: int) -> int:
@@ -46,39 +68,6 @@ def xor_gate(x: int, y: int) -> int:
 
 
 GATE_FUNCTIONS = {"AND": and_gate, "OR": or_gate, "XOR": xor_gate}
-
-
-def parse_inputs(lines: list[str]) -> Board:
-    """Parse inputs into initial value and configuration of wires."""
-    initial_values, logics = {}, {}
-    i = 0
-
-    # Read initial values
-    while lines[i]:
-        line = lines[i]
-        wire, value = line[:3], int(line[5])
-        initial_values[wire] = value
-        i += 1
-    i += 1
-
-    # Read logical gates
-    adj_list, inputs_to = defaultdict(set), defaultdict(list)
-    indegrees = defaultdict(int)
-
-    while i < len(lines):
-        input1, fn, input2, _, output = lines[i].split(" ")
-
-        logics[output] = fn
-        adj_list[input1].add(output)
-        adj_list[input2].add(output)
-
-        inputs_to[output].append(input1)
-        inputs_to[output].append(input2)
-        indegrees[output] += 2
-
-        i += 1
-
-    return Board(initial_values, logics, adj_list, inputs_to, indegrees)
 
 
 def solve_values(board: Board) -> dict[str, int]:
@@ -129,13 +118,22 @@ def construct_output_from_z_wires(values: dict[str, int]) -> int:
     return output
 
 
-def run(lines: list[str]) -> int:
+def run(board: Board) -> int:
     """Find the decimal number represented by the wires starting with z."""
-    board = parse_inputs(lines)
     values = solve_values(board)
-
     return construct_output_from_z_wires(values)
 
 
-PARSER = inputs.parse_str_lines
+PARSER = inputs2.compose(
+    Board.from_configuration,
+    tuple,
+    inputs2.zip_applyf(
+        inputs2.mapf(
+            inputs2.compose(inputs2.zip_applyf(str, int), inputs2.splitf(": "))
+        ),
+        inputs2.mapf(inputs2.splitf(" ")),
+    ),
+    inputs2.list_split(""),
+    str.splitlines,
+)
 PRINTER = str

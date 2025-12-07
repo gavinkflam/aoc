@@ -13,7 +13,6 @@ Solutions:
 
 from aoc2024.solutions import star39
 from aoc2024.solutions.star39 import Coord, DIRECTIONS, Maze, VisitOrders
-from aoclibs import inputs
 
 
 MAX_CHEAT_TIME = 20
@@ -77,5 +76,5 @@ def run(maze: Maze) -> int:
     return count_good_cheats(maze, start, orders, threshold=GOOD_CHEAT_THRESHOLD)
 
 
-PARSER = inputs.parse_char_grid
+PARSER = str.splitlines
 PRINTER = str

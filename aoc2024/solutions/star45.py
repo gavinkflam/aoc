@@ -15,15 +15,10 @@ Solutions:
 
 from collections import defaultdict
 
-from aoclibs import inputs
+from aoclibs import inputs2
 
 
 AdjacencyList = dict[str, set[str]]
-
-
-def split_pairs(lines: list[str]) -> list[tuple[str, str]]:
-    """Split each line into a pair of computer."""
-    return [tuple(line.split("-")) for line in lines]
 
 
 def build_adjacency_list(pairs: list[tuple[str, str]]) -> AdjacencyList:
@@ -37,9 +32,8 @@ def build_adjacency_list(pairs: list[tuple[str, str]]) -> AdjacencyList:
     return adj_list
 
 
-def run(lines: list[str]) -> int:
+def run(pairs: list[tuple[str, str]]) -> int:
     """Find the number of three-computer groups with a member's name starting with t."""
-    pairs = split_pairs(lines)
     adj_list = build_adjacency_list(pairs)
 
     # Find groups satisfying the requirements
@@ -62,5 +56,8 @@ def run(lines: list[str]) -> int:
     return good_groups
 
 
-PARSER = inputs.parse_str_lines
+PARSER = inputs2.compose(
+    inputs2.mapf(inputs2.compose(tuple, inputs2.splitf("-"))),
+    str.splitlines,
+)
 PRINTER = str

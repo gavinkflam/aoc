@@ -10,15 +10,12 @@ Solutions:
         - O(mn) time, O(mn) auxiliary space
 """
 
-from aoclibs import inputs
-
-
 GOOD_CHEAT_THRESHOLD = 100
 UNVISITED = -1
 DIRECTIONS = [(-1, 0), (0, 1), (1, 0), (0, -1)]
 
 
-Maze = list[list[str]]
+Maze = list[str]
 Coord = tuple[int, int]
 VisitOrders = list[list[int]]
 
@@ -103,5 +100,5 @@ def run(maze: Maze) -> int:
     return count_good_cheats(maze, start, orders, threshold=GOOD_CHEAT_THRESHOLD)
 
 
-PARSER = inputs.parse_char_grid
+PARSER = str.splitlines
 PRINTER = str

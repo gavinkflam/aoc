@@ -16,12 +16,15 @@ Solutions:
 """
 
 from aoc2024.solutions import star37
-from aoclibs import inputs
+from aoc2024.solutions.star37 import Trie
 
 
-def run(lines: list[str]) -> int:
+def run(info: tuple[list[str], list[str]]) -> int:
     """Find the sum of the number of possible towel arrangements."""
-    trie, designs = star37.parse_inputs(lines)
+    words, designs = info
+    trie = Trie.from_words(words)
+
+    # Count arrangements
     arrangements = 0
 
     for design in designs:
@@ -46,5 +49,5 @@ def run(lines: list[str]) -> int:
     return arrangements
 
 
-PARSER = inputs.parse_str_lines
+PARSER = star37.PARSER
 PRINTER = str

@@ -19,7 +19,6 @@ Solutions:
 from collections import defaultdict
 
 from aoc2024.solutions import star41
-from aoclibs import inputs
 
 
 KEYS = star41.DPAD_COORDS.keys()
@@ -69,5 +68,5 @@ def run(codes: list[str]) -> int:
     return complexity_sum
 
 
-PARSER = inputs.parse_str_lines
+PARSER = str.splitlines
 PRINTER = str

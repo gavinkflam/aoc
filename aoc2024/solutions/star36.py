@@ -11,8 +11,9 @@ Solutions:
         - O(mn + k) time, O(mn) auxiliary space
 """
 
+from aoc2024.solutions import star35
 from aoc2024.solutions.star35 import BYTE, SIZE, SPACE
-from aoclibs import inputs, outputs
+from aoclibs import outputs
 
 
 DIRECTIONS = [(-1, 0), (-1, -1), (0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1)]
@@ -81,5 +82,5 @@ def run(positions: list[list[int]]) -> list[int]:
     return [-1, -1]
 
 
-PARSER = inputs.parse_int_grid_regexp
+PARSER = star35.PARSER
 PRINTER = outputs.stringify_list

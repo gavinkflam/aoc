@@ -12,7 +12,7 @@ Solutions:
                   n = width
 """
 
-from aoclibs import inputs
+from aoc2024.solutions import star27
 
 
 PRINT_PICTURE = False
@@ -76,5 +76,5 @@ def run(robots: list[list[int]]) -> int:
     return -1
 
 
-PARSER = inputs.parse_int_grid_regexp
+PARSER = star27.PARSER
 PRINTER = str

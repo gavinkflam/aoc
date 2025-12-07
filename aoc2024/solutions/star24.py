@@ -8,14 +8,11 @@ Solutions:
         - O(mn) time, O(mn) auxiliary space
 """
 
-from aoclibs import inputs
-
-
 DIRECTIONS = [(-1, 0), (0, 1), (1, 0), (0, -1)]
 UNVISITED = -1
 
 
-def run(grid: list[list[str]]) -> int:
+def run(grid: list[str]) -> int:
     """Calculate the total cost of fences."""
     rows, cols = len(grid), len(grid[0])
     costs = 0
@@ -66,5 +63,5 @@ def run(grid: list[list[str]]) -> int:
     return costs
 
 
-PARSER = inputs.parse_char_grid
+PARSER = str.splitlines
 PRINTER = str

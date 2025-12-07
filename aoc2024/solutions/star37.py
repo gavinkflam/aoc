@@ -17,7 +17,7 @@ Solutions:
 
 from dataclasses import dataclass, field
 
-from aoclibs import inputs
+from aoclibs import inputs2
 
 
 @dataclass
@@ -54,13 +54,6 @@ class Trie:
         node.is_word = True
 
 
-def parse_inputs(lines: list[str]) -> tuple[Trie, list[str]]:
-    """Return available towels in as a trie and the list of desired designs."""
-    trie = Trie.from_words(lines[0].split(", "))
-    designs = lines[2:]
-    return (trie, designs)
-
-
 def is_possible(trie: Trie, design: str) -> bool:
     """Determine is the design possible with the available towels."""
     k = len(design)
@@ -86,9 +79,12 @@ def is_possible(trie: Trie, design: str) -> bool:
     return dp[0]
 
 
-def run(lines: list[str]) -> int:
+def run(info: tuple[list[str], list[str]]) -> int:
     """Find the number of possible designs."""
-    trie, designs = parse_inputs(lines)
+    words, designs = info
+    trie = Trie.from_words(words)
+
+    # Count possible designs
     possible_designs = 0
 
     for design in designs:
@@ -98,5 +94,13 @@ def run(lines: list[str]) -> int:
     return possible_designs
 
 
-PARSER = inputs.parse_str_lines
+PARSER = inputs2.compose(
+    tuple,
+    inputs2.zip_applyf(
+        inputs2.compose(inputs2.splitf(", "), inputs2.ith(0)),
+        inputs2.identity,
+    ),
+    inputs2.list_split(""),
+    str.splitlines,
+)
 PRINTER = str

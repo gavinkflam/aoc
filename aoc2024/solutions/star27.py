@@ -14,7 +14,7 @@ Solutions:
         - O(r) time, O(1) auxiliary space
 """
 
-from aoclibs import inputs
+from aoclibs import inputs2, patterns
 
 
 WIDTH, HEIGHT = 101, 103
@@ -41,5 +41,8 @@ def run(robots: list[list[int]]) -> int:
     return counts[0] * counts[1] * counts[2] * counts[3]
 
 
-PARSER = inputs.parse_int_grid_regexp
+PARSER = inputs2.compose(
+    inputs2.mapf(inputs2.re_mapf(patterns.SIGNED_INT, int)),
+    str.splitlines,
+)
 PRINTER = str
