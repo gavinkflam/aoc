@@ -77,6 +77,13 @@ def seq_split(sep: Any) -> Callable[[Sequence[Any]], list[list[Any]]]:
     return inner
 
 
+def seq_slice(
+    start: int, stop: int, step: int = 1
+) -> Callable[[Sequence[Any]], Sequence[Any]]:
+    """Return a function that accept a sequence, to slice it using the given arguments."""
+    return lambda ls: ls[start:stop:step]
+
+
 def split_take_n(n: int) -> Callable[[Sequence], list[Sequence]]:
     """Return a function that accept a sequence,
     to split it into two parts with a first part of length n."""
