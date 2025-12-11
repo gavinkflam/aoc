@@ -10,4 +10,4 @@ class TestSolutions(unittest.TestCase):
 
     def test_2025_solutions(self):
         """Run solutions and compare against the answers."""
-        test_utils.test_solutions(2024, 50)
+        test_utils.test_solutions(2024, range(1, 51))

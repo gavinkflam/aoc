@@ -1,13 +1,14 @@
 """Run solutions and compare against the answers."""
 
 import time
+from typing import Iterable
 
 from aoclibs import executions, files
 
 
-def test_solutions(year: int, stars: int):
+def test_solutions(year: int, stars: Iterable[int]):
     """Run solutions with the defined input parser and result printer."""
-    for star in range(1, stars + 1):
+    for star in stars:
         start_ns = time.time_ns()
         answer = executions.run_solution(year, star)
         took_ms = round((time.time_ns() - start_ns) / 10**6, 2)
