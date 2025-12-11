@@ -12,6 +12,7 @@ Solutions:
             where E = number of connections
 """
 
+from typing import Optional
 import re
 
 from aoclibs.hofs import compose, mapf, re_splitf
@@ -28,20 +29,29 @@ def make_adjacency_list(devices: list[list[str]]) -> dict[str, list[int]]:
     return adj_list
 
 
-def find_in_degrees(adj_list: dict[str, list[int]], origin: str) -> dict[str, int]:
-    """Perform BFS to find all the reachable devices from origin and their in-degrees."""
+def find_in_degrees(
+    adj_list: dict[str, list[int]], origin: str, excludes: Optional[set[str]] = None
+) -> dict[str, int]:
+    """Perform BFS to find the in-degrees of reachable devices, not in excludes, from origin."""
     queue = [origin]
     in_degrees = {}
+    excludes = excludes if excludes is not None else {}
 
     while queue:
         new_queue = []
 
         for device in queue:
-            for out_device in adj_list.get(device, []):
-                in_degrees[out_device] = in_degrees.get(out_device, 0) + 1
+            if device not in adj_list:
+                continue
 
+            for out_device in adj_list[device]:
+                if out_device in excludes:
+                    continue
+
+                in_degrees[out_device] = in_degrees.get(out_device, 0) + 1
                 if in_degrees[out_device] > 1:
                     continue
+
                 new_queue.append(out_device)
 
         queue = new_queue
@@ -49,20 +59,20 @@ def find_in_degrees(adj_list: dict[str, list[int]], origin: str) -> dict[str, in
     return in_degrees
 
 
-def run(devices: list[list[str]]) -> int:
-    """Find the number of paths from you to out."""
-    adj_list = make_adjacency_list(devices)
-    in_degrees = find_in_degrees(adj_list, "you")
-
-    # Topological sort
-    queue, paths = ["you"], {"you": 1}
+def count_paths(
+    adj_list: dict[str, list[str]], in_degrees: dict[str, int], origin: str, dest: str
+) -> int:
+    """Perform topological sort to count the number of paths from origin to dest."""
+    queue, paths = [origin], {origin: 1}
 
     while queue:
         new_queue = []
 
         for device in queue:
-            if device == "out":
+            if device == dest:
                 return paths[device]
+            if device not in adj_list:
+                continue
 
             for out_device in adj_list[device]:
                 if out_device not in in_degrees:
@@ -77,6 +87,14 @@ def run(devices: list[list[str]]) -> int:
         queue = new_queue
 
     return 0
+
+
+def run(devices: list[list[str]]) -> int:
+    """Find the number of paths from you to out."""
+    adj_list = make_adjacency_list(devices)
+    in_degrees = find_in_degrees(adj_list, "you")
+
+    return count_paths(adj_list, in_degrees, "you", "out")
 
 
 PARSER = compose(mapf(re_splitf(re.compile(r":?\s"))), str.splitlines)
