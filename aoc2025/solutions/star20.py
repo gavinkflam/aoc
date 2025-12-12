@@ -23,7 +23,8 @@ from scipy.optimize import milp, LinearConstraint
 from aoc2025.solutions import star19
 
 
-Matrix = list[list[Union[Fraction, int]]]
+UNum = Union[Fraction, int]
+Matrix = list[list[UNum]]
 
 
 def make_augmented_matrix(buttons: list[int], joltages: list[int]) -> Matrix:
@@ -66,21 +67,21 @@ def forward_elimination(matrix: Matrix) -> list[int]:
 
         # Standardize pivot column to one
         if matrix[row][col] != 1:
-            factor = simplify_int(Fraction(1, matrix[row][col]))
+            factor = Fraction(1, matrix[row][col])
 
             for c in range(col, cols):
-                matrix[row][c] = simplify_int(factor * matrix[row][c])
+                matrix[row][c] = try_simplify_num(factor * matrix[row][c])
 
         # Eliminate other rows with non-zero values in the current column
         for r in range(rows):
             if r == row or matrix[r][col] == 0:
                 continue
 
-            factor = simplify_int(Fraction(matrix[r][col], matrix[row][col]))
+            factor = Fraction(matrix[r][col], matrix[row][col])
             matrix[r][col] = 0
 
             for c in range(col + 1, cols):
-                matrix[r][c] -= simplify_int(factor * matrix[row][c])
+                matrix[r][c] = try_simplify_num(matrix[r][c] - factor * matrix[row][c])
 
         row += 1
         col += 1
@@ -92,37 +93,77 @@ def forward_elimination(matrix: Matrix) -> list[int]:
     return free_variables
 
 
-def simplify_int(x: Union[Fraction, int]) -> Union[Fraction, int]:
-    """If x is a Fraction but an integer, reduce it to an int."""
+def try_simplify_num(x: UNum) -> UNum:
+    """If x is a fraction but an integer, simplify it to an int."""
     return int(x) if x.is_integer() else x
 
 
-def minimize_variables_sum(matrix: Matrix, free_variables: list[int]) -> int:
-    """Find the minimum variables sum by trying all valid values of the free variables."""
-    values = {var: 0 for var in free_variables}
+def tighten_bounds(
+    matrix: Matrix, free_variables: list[int], bounds: dict[int, list[int]]
+):
+    """Tighten the lower and upper bound of the free variables using single variable constriants."""
+    rows = len(matrix)
+
+    for row in range(rows):
+        for free_var in free_variables:
+            # The equation does not depend on this free variable, move to the next one
+            if matrix[row][free_var] == 0:
+                continue
+
+            # If the equation depends on more than one free variables, move to the next one
+            depends = sum(1 for v in free_variables if matrix[row][v] != 0)
+            if depends > 1:
+                continue
+
+            # Tighten the bound if possible
+            bound = try_simplify_num(
+                Fraction(1, matrix[row][free_var]) * matrix[row][-1]
+            )
+
+            if matrix[row][free_var] > 0:  # Upper bound
+                bounds[free_var][1] = min(bounds[free_var][1], math.floor(bound))
+            else:  # Lower bound
+                bounds[free_var][0] = max(bounds[free_var][0], math.ceil(bound))
+
+
+def minimize_variable_sum(
+    matrix: Matrix, free_variables: list[int], bounds: dict[int, list[int]]
+) -> list[int]:
+    """Find the minimum variables sum by trying different values of the free variables."""
+    values = {var: bounds[var][0] for var in free_variables}
 
     # Backtracking
-    def backtrack(curr: int) -> Optional[int]:
-        if curr == len(free_variables):
-            results = back_substitution(matrix, values)
-            return sum(results) if results else None
+    def backtrack(var: int) -> tuple[Optional[int], Optional[list[int]]]:
+        if var == len(free_variables):
+            solution = back_substitution(matrix, values)
+            return (sum(solution), solution) if solution else (None, None)
 
-        min_variables_sum = math.inf
-        for val in range(0, 41):
-            values[free_variables[curr]] = val
-            variables_sum = backtrack(curr + 1)
+        # Try all values within the boundary
+        free_var = free_variables[var]
+        min_variables_sum, best_solution = None, None
 
-            if variables_sum is not None and variables_sum < min_variables_sum:
+        upper_bound = bounds[free_var][1]
+        if bounds[free_var][1] == math.inf:
+            upper_bound = bounds[free_var][0] + 150
+
+        for try_value in range(bounds[free_var][0], upper_bound + 1):
+            values[free_var] = try_value
+            variables_sum, solution = backtrack(var + 1)
+
+            if solution is None:
+                continue
+            if min_variables_sum is None or variables_sum < min_variables_sum:
                 min_variables_sum = variables_sum
+                best_solution = solution
 
-        return min_variables_sum
+        return (min_variables_sum, best_solution)
 
-    return backtrack(0)
+    return backtrack(0)[1]
 
 
 def back_substitution(matrix: Matrix, free_variables: dict[int, int]) -> list[int]:
     """Perform back substitution to find values of the variables."""
-    num_vars, rows = len(matrix[0]) - 1, len(matrix)
+    rows, num_vars = len(matrix), len(matrix[0]) - 1
 
     # Initialize variable values list
     results = [0] * num_vars
@@ -179,19 +220,21 @@ def run(manual: list[tuple[str, list[list[int]]]]) -> int:
 
         # Perform Gaussian elimination
         matrix = make_augmented_matrix(buttons, joltages)
-        ref_ans = sum(solve_with_scipy(matrix))  # Obtain reference answer
+        ref_ans = solve_with_scipy(matrix)  # Obtain reference answer
         free_variables = forward_elimination(matrix)
 
         if not free_variables:
-            algo_ans = sum(back_substitution(matrix, {}))
+            # No free variables: back substitution can produce the only solution
+            algo_ans = back_substitution(matrix, {})
         else:
-            # Perform linear integer programming if any free variables
-            algo_ans = minimize_variables_sum(matrix, free_variables)
+            # Perform linear integer programming to find the optimimum solution
+            bounds = {v: [0, math.inf] for v in free_variables}
+            tighten_bounds(matrix, free_variables, bounds)
+            algo_ans = minimize_variable_sum(matrix, free_variables, bounds)
 
-        if ref_ans != algo_ans:
-            print(f"mismatch: scipy={ref_ans} algo={algo_ans}")
-
-        ans += ref_ans
+        if sum(ref_ans) != sum(algo_ans):
+            print(f"mismatch: scipy={sum(ref_ans)} algo={sum(algo_ans)}")
+        ans += sum(ref_ans)
 
     return ans
 
