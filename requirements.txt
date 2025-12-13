@@ -1,3 +1,2 @@
 cryptocode==0.1
 pycryptodomex==3.21.0
-scipy==1.16.3

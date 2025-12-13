@@ -4,7 +4,7 @@ Problem page:
     https://adventofcode.com/2025/day/10
 
 Solutions:
-    1. Brute force, backtracking
+    1. Brute force, DFS
         - O(m * 2^n * k) time, O(n + k) auxiliary space,
             where m = number of machines,
                   n = maximum number of buttons on a machine,
@@ -28,7 +28,7 @@ from aoclibs.hofs import (
 
 def lights_to_bits(lights: str) -> int:
     """Convert lights string to an integer with each bit representing a light."""
-    return sum(2**i if x == "#" else 0 for i, x in enumerate(lights))
+    return sum(2**i for i, x in enumerate(lights) if x == "#")
 
 
 def button_to_bits(button: list[int]) -> int:
@@ -36,16 +36,16 @@ def button_to_bits(button: list[int]) -> int:
     return sum(2**x for x in button)
 
 
-def min_button_clicks(target: int, buttons: list[int], current: int) -> int:
+def min_button_clicks(target: int, buttons: list[int], button_idx: int = 0) -> int:
     """Find the minimum button clicks to achieve target."""
     n = len(buttons)
 
-    if current == n:
+    if button_idx == n:
         return 0 if target == 0 else math.inf
 
     return min(
-        min_button_clicks(target, buttons, current + 1),
-        min_button_clicks(target ^ buttons[current], buttons, current + 1) + 1,
+        min_button_clicks(target, buttons, button_idx + 1),
+        min_button_clicks(target ^ buttons[button_idx], buttons, button_idx + 1) + 1,
     )
 
 
@@ -57,7 +57,7 @@ def run(manual: list[tuple[str, list[list[int]]]]) -> int:
         target = lights_to_bits(lights)
         buttons = [button_to_bits(button) for button in configs[:-1]]
 
-        ans += min_button_clicks(target, buttons, 0)
+        ans += min_button_clicks(target, buttons)
 
     return ans
 

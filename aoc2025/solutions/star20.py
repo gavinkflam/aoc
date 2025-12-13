@@ -4,211 +4,98 @@ Problem page:
     https://adventofcode.com/2025/day/10
 
 Solutions:
-    1. Brute force, backtracking
+    1. Brute force, DFS
         - O(m * 2^(n + j) * k) time, O(n + k) auxiliary space,
             where m = number of machines,
                   n = maximum number of buttons on a machine,
                   k = maximum number of indicator lights on a machine,
                   j = maximum sum of joltage requirements of a machine
-    2. Gaussian elimination + integer linear programming
-        - O(mnk + ?) time, O(mnk + ?) auxiliary space
+    2. DFS
+        - O(m * 2^n * k * log(j)) time, O(n + k) auxiliary space
+        - Optimizations:
+            a. Represent each light by a bit, and apply bitwise XOR as button clicks
+            b. Pruning - pattern not achievable, or joltage too high
+        - Credits: https://www.reddit.com/r/adventofcode/comments/1pk87hl/
 """
-
-from fractions import Fraction
-import math
-from typing import Optional, Union
-
-from scipy.optimize import milp, LinearConstraint
 
 from aoc2025.solutions import star19
 
 
-UNum = Union[Fraction, int]
-Matrix = list[list[UNum]]
+INF = 10**9
+BIT_TO_POSITION = {2**i: i for i in range(64)}
 
 
-def make_augmented_matrix(buttons: list[int], joltages: list[int]) -> Matrix:
-    """Make an augmented matrix representing button effects and joltage requirements."""
-    n, k = len(buttons), len(joltages)
-    matrix = [[0] * (n + 1) for _ in range(k)]
+def generate_ways_to_make_each_pattern(buttons: list[int]) -> dict[int, list[int]]:
+    """Generate all button combinations and group by the pattern they are producing."""
+    n = len(buttons)
+    ways = {}
 
-    for i, button in enumerate(buttons):
-        for light in button:
-            matrix[light][i] = 1
+    def dfs(idx: int, pattern_mask: int, buttons_mask: int):
+        # Base case
+        if idx == n:
+            if pattern_mask not in ways:
+                ways[pattern_mask] = []
 
-    for i, jolt in enumerate(joltages):
-        matrix[i][-1] = jolt
+            ways[pattern_mask].append(buttons_mask)
+            return
 
-    return matrix
+        # Click the current button
+        dfs(idx + 1, pattern_mask ^ buttons[idx], buttons_mask ^ (2**idx))
 
+        # Skip the current button
+        dfs(idx + 1, pattern_mask, buttons_mask)
 
-def forward_elimination(matrix: Matrix) -> list[int]:
-    """Transform the given matrix into reduced row echelon form. Return the free variables."""
-    rows, cols = len(matrix), len(matrix[0])
-    free_variables = []
-    row, col = 0, 0
-
-    while row < rows and col < cols - 1:
-        # Find the row with the largest absolute value of the current column
-        pivot_row = row
-
-        for r in range(row + 1, rows):
-            if abs(matrix[r][col]) > abs(matrix[pivot_row][col]):
-                pivot_row = r
-
-        # No pivot in this column, move to next column
-        if matrix[pivot_row][col] == 0:
-            free_variables.append(col)
-            col += 1
-            continue
-
-        # Swap current row with the pivot row
-        matrix[pivot_row], matrix[row] = matrix[row], matrix[pivot_row]
-
-        # Standardize pivot column to one
-        if matrix[row][col] != 1:
-            factor = Fraction(1, matrix[row][col])
-
-            for c in range(col, cols):
-                matrix[row][c] = try_simplify_num(factor * matrix[row][c])
-
-        # Eliminate other rows with non-zero values in the current column
-        for r in range(rows):
-            if r == row or matrix[r][col] == 0:
-                continue
-
-            factor = Fraction(matrix[r][col], matrix[row][col])
-            matrix[r][col] = 0
-
-            for c in range(col + 1, cols):
-                matrix[r][c] = try_simplify_num(matrix[r][c] - factor * matrix[row][c])
-
-        row += 1
-        col += 1
-
-    # Remaining columns are also free variables
-    for c in range(col, cols - 1):
-        free_variables.append(c)
-
-    return free_variables
+    dfs(0, 0, 0)
+    return ways
 
 
-def try_simplify_num(x: UNum) -> UNum:
-    """If x is a fraction but an integer, simplify it to an int."""
-    return int(x) if x.is_integer() else x
+def find_min_clicks_to_charge(
+    ways: dict[int, list[int]], buttons: list[int], joltages: list[int]
+) -> int:
+    """Find minimum button clicks to achieve the required joltages."""
+    # Base case
+    if not any(joltages):
+        return 0
 
+    pattern_mask = sum(2**i for i, jolt in enumerate(joltages) if jolt % 2 == 1)
 
-def tighten_bounds(
-    matrix: Matrix, free_variables: list[int], bounds: dict[int, list[int]]
-):
-    """Tighten the lower and upper bound of the free variables using single variable constriants."""
-    rows = len(matrix)
+    # No button combinations can achieve pattern
+    if pattern_mask not in ways:
+        return INF
 
-    for row in range(rows):
-        for free_var in free_variables:
-            # The equation does not depend on this free variable, move to the next one
-            if matrix[row][free_var] == 0:
-                continue
+    # Utility function to find the minimum button clicks of a specific button combination
+    def solve_combination(buttons_mask: int, joltages: list[int]) -> int:
+        set_bits = 0
 
-            # If the equation depends on more than one free variables, move to the next one
-            depends = sum(1 for v in free_variables if matrix[row][v] != 0)
-            if depends > 1:
-                continue
+        # Find the new joltage requirements after clicking the combination of buttons
+        while buttons_mask > 0:
+            button_idx = BIT_TO_POSITION[buttons_mask & -buttons_mask]
+            lights_bitmask = buttons[button_idx]
 
-            # Tighten the bound if possible
-            bound = try_simplify_num(
-                Fraction(1, matrix[row][free_var]) * matrix[row][-1]
-            )
+            while lights_bitmask > 0:
+                light = BIT_TO_POSITION[lights_bitmask & -lights_bitmask]
+                joltages[light] -= 1
 
-            if matrix[row][free_var] > 0:  # Upper bound
-                bounds[free_var][1] = min(bounds[free_var][1], math.floor(bound))
-            else:  # Lower bound
-                bounds[free_var][0] = max(bounds[free_var][0], math.ceil(bound))
+                if joltages[light] < 0:  # Out of bound
+                    return INF
 
+                lights_bitmask &= lights_bitmask - 1
 
-def minimize_variable_sum(
-    matrix: Matrix, free_variables: list[int], bounds: dict[int, list[int]]
-) -> list[int]:
-    """Find the minimum variables sum by trying different values of the free variables."""
-    values = {var: bounds[var][0] for var in free_variables}
+            set_bits += 1
+            buttons_mask &= buttons_mask - 1
 
-    # Backtracking
-    def backtrack(var: int) -> tuple[Optional[int], Optional[list[int]]]:
-        if var == len(free_variables):
-            solution = back_substitution(matrix, values)
-            return (sum(solution), solution) if solution else (None, None)
+        # Since all joltages are now even, halve the required amount to save work
+        return set_bits + 2 * find_min_clicks_to_charge(
+            ways, buttons, [jolt // 2 for jolt in joltages]
+        )
 
-        # Try all values within the boundary
-        free_var = free_variables[var]
-        min_variables_sum, best_solution = None, None
+    # Explore all button combinations to achieve pattern
+    min_clicks = INF
 
-        upper_bound = bounds[free_var][1]
-        if bounds[free_var][1] == math.inf:
-            upper_bound = bounds[free_var][0] + 150
+    for buttons_mask in ways[pattern_mask]:
+        min_clicks = min(min_clicks, solve_combination(buttons_mask, list(joltages)))
 
-        for try_value in range(bounds[free_var][0], upper_bound + 1):
-            values[free_var] = try_value
-            variables_sum, solution = backtrack(var + 1)
-
-            if solution is None:
-                continue
-            if min_variables_sum is None or variables_sum < min_variables_sum:
-                min_variables_sum = variables_sum
-                best_solution = solution
-
-        return (min_variables_sum, best_solution)
-
-    return backtrack(0)[1]
-
-
-def back_substitution(matrix: Matrix, free_variables: dict[int, int]) -> list[int]:
-    """Perform back substitution to find values of the variables."""
-    rows, num_vars = len(matrix), len(matrix[0]) - 1
-
-    # Initialize variable values list
-    results = [0] * num_vars
-    for var, value in free_variables.items():
-        results[var] = value
-
-    # Back substitution
-    for row in range(rows - 1, -1, -1):
-        # Find pivot column
-        pivot_column = 0
-
-        while pivot_column < num_vars and matrix[row][pivot_column] == 0:
-            pivot_column += 1
-
-        # This formula is all zeros, move to next formula
-        if pivot_column == num_vars:
-            continue
-
-        # Find solution for this variable
-        results[pivot_column] = matrix[row][-1]
-
-        for col in range(num_vars - 1, pivot_column, -1):
-            results[pivot_column] -= matrix[row][col] * results[col]
-
-        # Non-negative or non-integer solution
-        if results[pivot_column] < 0 or not results[pivot_column].is_integer():
-            return []
-
-        results[pivot_column] = int(results[pivot_column])
-
-    return results
-
-
-def solve_with_scipy(matrix: Matrix) -> list[int]:
-    """Use SciPy to optimize for fewest total button clicks."""
-    rows, num_vars = len(matrix), len(matrix[0]) - 1
-    objective, integrality = [1] * num_vars, [1] * num_vars
-
-    coefficients = [[matrix[r][c] for c in range(num_vars)] for r in range(rows)]
-    lower_bounds = [matrix[r][-1] for r in range(rows)]
-    upper_bounds = lower_bounds.copy()
-    constraints = LinearConstraint(coefficients, lower_bounds, upper_bounds)
-
-    result = milp(c=objective, constraints=constraints, integrality=integrality)
-    return [round(v) for v in result.x]
+    return min_clicks
 
 
 def run(manual: list[tuple[str, list[list[int]]]]) -> int:
@@ -217,24 +104,9 @@ def run(manual: list[tuple[str, list[list[int]]]]) -> int:
 
     for _, configs in manual:
         buttons, joltages = configs[:-1], configs[-1]
-
-        # Perform Gaussian elimination
-        matrix = make_augmented_matrix(buttons, joltages)
-        ref_ans = solve_with_scipy(matrix)  # Obtain reference answer
-        free_variables = forward_elimination(matrix)
-
-        if not free_variables:
-            # No free variables: back substitution can produce the only solution
-            algo_ans = back_substitution(matrix, {})
-        else:
-            # Perform linear integer programming to find the optimimum solution
-            bounds = {v: [0, math.inf] for v in free_variables}
-            tighten_bounds(matrix, free_variables, bounds)
-            algo_ans = minimize_variable_sum(matrix, free_variables, bounds)
-
-        if sum(ref_ans) != sum(algo_ans):
-            print(f"mismatch: scipy={sum(ref_ans)} algo={sum(algo_ans)}")
-        ans += sum(ref_ans)
+        button_masks = [star19.button_to_bits(button) for button in buttons]
+        ways = generate_ways_to_make_each_pattern(button_masks)
+        ans += find_min_clicks_to_charge(ways, button_masks, joltages)
 
     return ans
 
