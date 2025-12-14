@@ -10,6 +10,7 @@ Solutions:
         - O(mn) time, O(1) auxiliary space
 """
 
+from aoclibs.executions import SolutionModule
 from aoclibs.hofs import compose, mapf
 
 
@@ -52,5 +53,5 @@ def run(grid: list[list[str]]) -> int:
     return visited_cells
 
 
-PARSER = compose(mapf(list), str.splitlines)
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = compose(mapf(list), str.splitlines)

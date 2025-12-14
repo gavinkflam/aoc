@@ -11,6 +11,8 @@ Solutions:
 
 from collections import defaultdict
 
+from aoclibs.executions import SolutionModule
+
 
 def find_antennas(grid: list[str]) -> dict[str, list[tuple[int, int]]]:
     """Find the locations of all antennas grouped by frequency."""
@@ -54,5 +56,5 @@ def run(grid: list[str]) -> int:
     return len(antinodes)
 
 
-PARSER = str.splitlines
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = str.splitlines

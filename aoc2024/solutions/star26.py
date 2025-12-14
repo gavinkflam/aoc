@@ -13,6 +13,7 @@ Solutions:
 from fractions import Fraction
 from typing import Optional
 
+from aoclibs.executions import SolutionModule
 from aoc2024.solutions import star25
 
 
@@ -37,14 +38,14 @@ def run(machines: list[list[list[int]]]) -> int:
 
     for machine in machines:
         [ax, ay], [bx, by], [px, py] = machine
-        solution = solve([ax, ay, bx, by, px + ADJUSTMENT, py + ADJUSTMENT])
+        maybe_solution = solve([ax, ay, bx, by, px + ADJUSTMENT, py + ADJUSTMENT])
 
-        if solution:
-            a, b = solution
+        if maybe_solution:
+            a, b = maybe_solution
             total_costs += 3 * a + b
 
     return total_costs
 
 
-PARSER = star25.PARSER
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = star25.solution.parser

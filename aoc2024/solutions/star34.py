@@ -17,6 +17,7 @@ from typing import Optional
 
 from aoc2024.solutions import star33
 from aoc2024.solutions.star33 import Executable
+from aoclibs.executions import SolutionModule
 
 
 def run(executable: Executable) -> int:
@@ -47,5 +48,5 @@ def run(executable: Executable) -> int:
     return backtrack(0, len(program) - 1)
 
 
-PARSER = star33.PARSER
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = star33.solution.parser

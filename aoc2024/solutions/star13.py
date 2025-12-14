@@ -10,6 +10,7 @@ Solutions:
 """
 
 from aoclibs import patterns
+from aoclibs.executions import SolutionModule
 from aoclibs.hofs import compose, mapf, re_mapf
 
 
@@ -35,8 +36,8 @@ def run(equations: list[list[int]]) -> int:
     return valid_equations_sum
 
 
-PARSER = compose(
+solution = SolutionModule(run=run)
+solution.parser = compose(
     mapf(re_mapf(patterns.UNSIGNED_INT, int)),
     str.splitlines,
 )
-PRINTER = str

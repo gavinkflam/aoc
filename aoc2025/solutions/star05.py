@@ -13,6 +13,7 @@ Solutions:
 """
 
 from aoclibs.hofs import compose, mapf
+from aoclibs.executions import SolutionModule
 
 
 def run(banks: list[list[int]]) -> int:
@@ -36,5 +37,5 @@ def run(banks: list[list[int]]) -> int:
     return ans
 
 
-PARSER = compose(mapf(mapf(int)), str.splitlines)
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = compose(mapf(mapf(int)), str.splitlines)

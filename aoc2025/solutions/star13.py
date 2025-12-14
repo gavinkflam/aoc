@@ -10,6 +10,8 @@ Solutions:
                   n = number of columns
 """
 
+from aoclibs.executions import SolutionModule
+
 
 def run(grid: list[str]) -> int:
     """Count the number of times the tachyon beam splits."""
@@ -34,5 +36,5 @@ def run(grid: list[str]) -> int:
     return splits
 
 
-PARSER = str.splitlines
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = str.splitlines

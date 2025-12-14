@@ -11,6 +11,7 @@ Solutions:
 """
 
 from aoc2024.solutions import star11
+from aoclibs.executions import SolutionModule
 
 
 TRIED = 1 << 4
@@ -73,5 +74,5 @@ def run(grid: list[list[str]]) -> int:
             row, col = nr, nc
 
 
-PARSER = star11.PARSER
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = star11.solution.parser

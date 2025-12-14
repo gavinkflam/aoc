@@ -16,6 +16,7 @@ Solutions:
 from collections import defaultdict
 from dataclasses import dataclass
 
+from aoclibs.executions import SolutionModule
 from aoclibs.hofs import applyf, compose, mapf, seq_split, str_splitf, zip_applyf
 
 
@@ -61,7 +62,8 @@ def run(instructions: Instructions) -> int:
     return mid_page_sum
 
 
-PARSER = compose(
+solution = SolutionModule(run=run)
+solution.parser = compose(
     applyf(Instructions),
     zip_applyf(
         mapf(compose(mapf(int), str_splitf("|"))),
@@ -70,4 +72,3 @@ PARSER = compose(
     seq_split(""),
     str.splitlines,
 )
-PRINTER = str

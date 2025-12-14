@@ -15,6 +15,7 @@ Solutions:
 """
 
 from aoclibs import patterns
+from aoclibs.executions import SolutionModule
 from aoclibs.hofs import compose, mapf, re_mapf
 
 
@@ -42,8 +43,8 @@ def run(robots: list[list[int]]) -> int:
     return counts[0] * counts[1] * counts[2] * counts[3]
 
 
-PARSER = compose(
+solution = SolutionModule(run=run)
+solution.parser = compose(
     mapf(re_mapf(patterns.SIGNED_INT, int)),
     str.splitlines,
 )
-PRINTER = str

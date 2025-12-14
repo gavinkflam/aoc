@@ -15,6 +15,7 @@ Solutions:
 
 import functools
 
+from aoclibs.executions import SolutionModule
 from aoc2024.solutions import star09
 
 
@@ -34,5 +35,5 @@ def run(instructions: star09.Instructions) -> int:
     return mid_page_sum
 
 
-PARSER = star09.PARSER
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = star09.solution.parser

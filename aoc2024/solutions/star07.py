@@ -8,6 +8,9 @@ Solutions:
         - O(mn) time, O(1) auxiliary space
 """
 
+from aoclibs.executions import SolutionModule
+
+
 DIRECTIONS = [(-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1)]
 TARGET = "XMAS"
 
@@ -40,5 +43,5 @@ def run(lines: list[str]) -> int:
     return counts
 
 
-PARSER = str.splitlines
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = str.splitlines

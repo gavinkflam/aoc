@@ -12,6 +12,8 @@ Solutions:
         - O(mn) time, O(mn) auxiliary space
 """
 
+from aoclibs.executions import SolutionModule
+
 
 def run(grid: list[str]) -> int:
     """Count the number of timelines."""
@@ -35,5 +37,5 @@ def run(grid: list[str]) -> int:
     return sum(occupied[-1])
 
 
-PARSER = str.splitlines
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = str.splitlines

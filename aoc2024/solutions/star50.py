@@ -8,11 +8,12 @@ Solutions:
         - O(1) time, O(1) auxiliary space
 """
 
+from aoclibs.executions import SolutionModule
+
 
 def run(_: str) -> int:
     """Happy 2025!"""
     return "*" * 50
 
 
-PARSER = str
-PRINTER = str
+solution = SolutionModule(run=run)

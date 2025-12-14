@@ -16,6 +16,7 @@ Solutions:
 
 from dataclasses import dataclass
 
+from aoclibs.executions import SolutionModule
 from aoclibs.hofs import applyf, compose, mapf, seq_split, str_splitf, zip_applyf
 
 
@@ -47,7 +48,8 @@ def run(database: InventoryDatabase) -> int:
     return ans
 
 
-PARSER = compose(
+solution = SolutionModule(run=run)
+solution.parser = compose(
     applyf(InventoryDatabase),
     zip_applyf(
         mapf(str_splitf("-", int)),
@@ -56,4 +58,3 @@ PARSER = compose(
     seq_split(""),
     str.splitlines,
 )
-PRINTER = str

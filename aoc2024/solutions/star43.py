@@ -10,6 +10,7 @@ Solutions:
                   k = number of generations
 """
 
+from aoclibs.executions import SolutionModule
 from aoclibs.hofs import compose, mapf
 
 
@@ -36,5 +37,5 @@ def run(secrets: list[int]) -> int:
     return evolve_sum
 
 
-PARSER = compose(mapf(int), str.splitlines)
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = compose(mapf(int), str.splitlines)

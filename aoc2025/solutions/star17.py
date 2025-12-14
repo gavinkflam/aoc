@@ -9,6 +9,7 @@ Solutions:
             where n = number of red tiles
 """
 
+from aoclibs.executions import SolutionModule
 from aoclibs.hofs import compose, mapf, str_splitf
 
 
@@ -28,5 +29,5 @@ def run(tiles: list[list[int]]) -> int:
     return max_area
 
 
-PARSER = compose(mapf(str_splitf(",", int)), str.splitlines)
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = compose(mapf(str_splitf(",", int)), str.splitlines)

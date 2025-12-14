@@ -13,6 +13,7 @@ Solutions:
 
 from aoc2024.solutions import star35
 from aoc2024.solutions.star35 import BYTE, SIZE, SPACE
+from aoclibs.executions import SolutionModule
 from aoclibs.hofs import str_join
 from aoclibs.union_find import UnionFind
 
@@ -52,5 +53,6 @@ def run(positions: list[list[int]]) -> list[int]:
     return [-1, -1]
 
 
-PARSER = star35.PARSER
-PRINTER = str_join(",")
+solution = SolutionModule(run=run)
+solution.parser = star35.solution.parser
+solution.printer = str_join(",")

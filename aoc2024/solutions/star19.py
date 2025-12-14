@@ -8,6 +8,7 @@ Solutions:
         - O(mn * mn) time, O(mn) auxiliary space
 """
 
+from aoclibs.executions import SolutionModule
 from aoclibs.hofs import compose, mapf
 
 
@@ -51,5 +52,5 @@ def run(grid: list[list[int]]) -> int:
     return trailhead_scores
 
 
-PARSER = compose(mapf(mapf(int)), str.splitlines)
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = compose(mapf(mapf(int)), str.splitlines)

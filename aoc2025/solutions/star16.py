@@ -15,6 +15,7 @@ Solutions:
 import heapq
 
 from aoc2025.solutions import star15
+from aoclibs.executions import SolutionModule
 from aoclibs.union_find import UnionFind
 
 
@@ -37,5 +38,5 @@ def run(boxes: list[list[int]]) -> int:
     return boxes[last_x][0] * boxes[last_y][0]
 
 
-PARSER = star15.PARSER
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = star15.solution.parser

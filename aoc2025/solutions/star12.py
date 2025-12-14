@@ -10,6 +10,7 @@ Solutions:
                   n = max length of line
 """
 
+from aoclibs.executions import SolutionModule
 from aoc2025.solutions import star11
 
 
@@ -58,5 +59,5 @@ def run(worksheet: list[str]) -> int:
     return ans
 
 
-PARSER = str.splitlines
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = str.splitlines

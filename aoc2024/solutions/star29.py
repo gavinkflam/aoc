@@ -13,6 +13,7 @@ Solutions:
 
 from typing import Optional
 
+from aoclibs.executions import SolutionModule
 from aoclibs.hofs import compose, mapf, seq_split, str_join, zip_applyf
 
 
@@ -91,10 +92,10 @@ def run(info: tuple[Grid, str]) -> int:
     return find_coordinate_sum(grid)
 
 
-PARSER = compose(
+solution = SolutionModule(run=run)
+solution.parser = compose(
     tuple,
     zip_applyf(mapf(list), str_join()),
     seq_split(""),
     str.splitlines,
 )
-PRINTER = str

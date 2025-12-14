@@ -9,6 +9,7 @@ Solutions:
 """
 
 from aoclibs import patterns
+from aoclibs.executions import SolutionModule
 from aoclibs.hofs import compose, mapf, re_mapf, seq_split
 
 
@@ -34,9 +35,9 @@ def run(machines: list[list[list[int]]]) -> int:
     return total_costs
 
 
-PARSER = compose(
+solution = SolutionModule(run=run)
+solution.parser = compose(
     mapf(mapf(re_mapf(patterns.UNSIGNED_INT, int))),
     seq_split(""),
     str.splitlines,
 )
-PRINTER = str

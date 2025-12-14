@@ -14,6 +14,7 @@ Solutions:
         - O(mlogm) time, O(m) auxiliary space
 """
 
+from aoclibs.executions import SolutionModule
 from aoc2025.solutions import star09
 
 
@@ -30,5 +31,5 @@ def run(database: star09.InventoryDatabase) -> int:
     return ans
 
 
-PARSER = star09.PARSER
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = star09.solution.parser

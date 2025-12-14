@@ -14,6 +14,7 @@ from dataclasses import dataclass
 from functools import reduce
 
 from aoclibs import patterns
+from aoclibs.executions import SolutionModule
 from aoclibs.hofs import applyf, compose, mapf, re_splitf, split_but_n, zip_applyf
 
 
@@ -50,7 +51,8 @@ def run(worksheet: Worksheet) -> int:
     return ans
 
 
-PARSER = compose(
+solution = SolutionModule(run=run)
+solution.parser = compose(
     applyf(Worksheet),
     zip_applyf(
         mapf(re_splitf(patterns.WHITESPACES, int, remove_empty_elements=True)),
@@ -59,4 +61,3 @@ PARSER = compose(
     split_but_n(1),
     str.splitlines,
 )
-PRINTER = str

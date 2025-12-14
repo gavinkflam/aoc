@@ -10,6 +10,9 @@ Solutions:
         - O(mn) time, O(mn) auxiliary space
 """
 
+from aoclibs.executions import SolutionModule
+
+
 GOOD_CHEAT_THRESHOLD = 100
 UNVISITED = -1
 DIRECTIONS = [(-1, 0), (0, 1), (1, 0), (0, -1)]
@@ -100,5 +103,5 @@ def run(maze: Maze) -> int:
     return count_good_cheats(maze, start, orders, threshold=GOOD_CHEAT_THRESHOLD)
 
 
-PARSER = str.splitlines
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = str.splitlines

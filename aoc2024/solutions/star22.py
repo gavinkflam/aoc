@@ -16,6 +16,7 @@ Solutions:
 
 import math
 
+from aoclibs.executions import SolutionModule
 from aoclibs.hofs import str_splitf
 
 
@@ -48,5 +49,5 @@ def run(stones: list[int]) -> int:
     return sum(blink(memo, stone, 75) for stone in stones)
 
 
-PARSER = str_splitf(" ", int)
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = str_splitf(" ", int)

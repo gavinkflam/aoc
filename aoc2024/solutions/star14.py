@@ -12,6 +12,7 @@ Solutions:
 """
 
 from aoc2024.solutions import star13
+from aoclibs.executions import SolutionModule
 
 
 def is_concat(x: int, y: int) -> bool:
@@ -48,5 +49,5 @@ def run(equations: list[list[int]]) -> int:
     return valid_equations_sum
 
 
-PARSER = star13.PARSER
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = star13.solution.parser

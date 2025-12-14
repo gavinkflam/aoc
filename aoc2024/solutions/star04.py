@@ -13,6 +13,7 @@ Solutions:
 """
 
 from aoc2024.solutions import star03
+from aoclibs.executions import SolutionModule
 
 
 def is_safe_report(report: list[int], direction: int) -> bool:
@@ -54,5 +55,5 @@ def run(grid: list[list[int]]) -> int:
     return safe_reports
 
 
-PARSER = star03.PARSER
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = star03.solution.parser

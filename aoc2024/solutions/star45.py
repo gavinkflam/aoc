@@ -15,6 +15,7 @@ Solutions:
 
 from collections import defaultdict
 
+from aoclibs.executions import SolutionModule
 from aoclibs.hofs import compose, mapf, str_splitf
 
 
@@ -56,8 +57,8 @@ def run(pairs: list[tuple[str, str]]) -> int:
     return good_groups
 
 
-PARSER = compose(
+solution = SolutionModule(run=run)
+solution.parser = compose(
     mapf(compose(tuple, str_splitf("-"))),
     str.splitlines,
 )
-PRINTER = str

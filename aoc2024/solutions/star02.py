@@ -13,6 +13,7 @@ Solutions:
 from collections import Counter
 
 from aoc2024.solutions import star01
+from aoclibs.executions import SolutionModule
 
 
 def run(grid: list[list[int]]) -> int:
@@ -25,5 +26,5 @@ def run(grid: list[list[int]]) -> int:
     return product_sum
 
 
-PARSER = star01.PARSER
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = star01.solution.parser

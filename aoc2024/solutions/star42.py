@@ -19,6 +19,7 @@ Solutions:
 from collections import defaultdict
 
 from aoc2024.solutions import star41
+from aoclibs.executions import SolutionModule
 
 
 KEYS = star41.DPAD_COORDS.keys()
@@ -68,5 +69,5 @@ def run(codes: list[str]) -> int:
     return complexity_sum
 
 
-PARSER = str.splitlines
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = str.splitlines

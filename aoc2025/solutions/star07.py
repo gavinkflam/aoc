@@ -11,6 +11,7 @@ Solutions:
 """
 
 from aoclibs.hofs import compose, mapf
+from aoclibs.executions import SolutionModule
 
 
 DIRECTIONS = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
@@ -46,5 +47,5 @@ def run(grid: list[list[str]]) -> int:
     return accessible
 
 
-PARSER = compose(mapf(list), str.splitlines)
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = compose(mapf(list), str.splitlines)

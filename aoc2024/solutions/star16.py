@@ -10,6 +10,7 @@ Solutions:
 """
 
 from aoc2024.solutions import star15
+from aoclibs.executions import SolutionModule
 
 
 def run(grid: list[str]) -> int:
@@ -42,5 +43,5 @@ def run(grid: list[str]) -> int:
     return len(antinodes)
 
 
-PARSER = str.splitlines
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = str.splitlines

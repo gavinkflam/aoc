@@ -15,6 +15,7 @@ Solutions:
 from collections import defaultdict
 from dataclasses import dataclass
 
+from aoclibs.executions import SolutionModule
 from aoclibs.hofs import compose, mapf, seq_split, str_splitf, zip_applyf
 
 
@@ -124,7 +125,8 @@ def run(board: Board) -> int:
     return construct_output_from_z_wires(values)
 
 
-PARSER = compose(
+solution = SolutionModule(run=run)
+solution.parser = compose(
     Board.from_configuration,
     tuple,
     zip_applyf(
@@ -134,4 +136,3 @@ PARSER = compose(
     seq_split(""),
     str.splitlines,
 )
-PRINTER = str

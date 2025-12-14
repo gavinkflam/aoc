@@ -19,6 +19,7 @@ from dataclasses import dataclass
 from typing import Optional
 
 from aoc2025.solutions import star05
+from aoclibs.executions import SolutionModule
 
 
 @dataclass
@@ -75,5 +76,5 @@ def run(banks: list[list[int]]) -> int:
     return ans
 
 
-PARSER = star05.PARSER
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = star05.solution.parser

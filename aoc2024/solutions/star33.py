@@ -9,6 +9,7 @@ Solutions:
 """
 
 from aoclibs import patterns
+from aoclibs.executions import SolutionModule
 from aoclibs.hofs import compose, ith, mapf, re_mapf, seq_split, str_join, zip_applyf
 
 
@@ -60,7 +61,8 @@ def run(executable: Executable) -> list[str]:
     return outputs_buffer
 
 
-PARSER = compose(
+solution = SolutionModule(run=run)
+solution.parser = compose(
     tuple,
     zip_applyf(
         mapf(compose(ith(0), re_mapf(patterns.UNSIGNED_INT, int))),
@@ -69,4 +71,4 @@ PARSER = compose(
     seq_split(""),
     str.splitlines,
 )
-PRINTER = str_join(",")
+solution.printer = str_join(",")

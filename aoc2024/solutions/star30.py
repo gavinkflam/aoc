@@ -20,6 +20,7 @@ from aoc2024.solutions.star29 import (
     Coord,
     Grid,
 )
+from aoclibs.executions import SolutionModule
 
 
 def expand_grid(grid: Grid) -> Grid:
@@ -135,5 +136,5 @@ def run(info: tuple[Grid, str]) -> int:
     return star29.find_coordinate_sum(grid)
 
 
-PARSER = star29.PARSER
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = star29.solution.parser

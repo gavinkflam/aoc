@@ -17,6 +17,7 @@ Solutions:
 
 from dataclasses import dataclass, field
 
+from aoclibs.executions import SolutionModule
 from aoclibs.hofs import compose, identity, ith, seq_split, str_splitf, zip_applyf
 
 
@@ -94,7 +95,8 @@ def run(info: tuple[list[str], list[str]]) -> int:
     return possible_designs
 
 
-PARSER = compose(
+solution = SolutionModule(run=run)
+solution.parser = compose(
     tuple,
     zip_applyf(
         compose(str_splitf(", "), ith(0)),
@@ -103,4 +105,3 @@ PARSER = compose(
     seq_split(""),
     str.splitlines,
 )
-PRINTER = str

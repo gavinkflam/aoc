@@ -14,6 +14,7 @@ Solutions:
         - O(n^2) time, O(n^2) auxiliary space
 """
 
+from aoclibs.executions import SolutionModule
 from aoc2025.solutions import star17
 
 
@@ -145,5 +146,5 @@ def run(tiles: list[list[int]]) -> int:
     return max_colored_area
 
 
-PARSER = star17.PARSER
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = star17.solution.parser

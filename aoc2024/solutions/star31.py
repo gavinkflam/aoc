@@ -13,6 +13,8 @@ Solutions:
 import heapq
 from typing import Optional
 
+from aoclibs.executions import SolutionModule
+
 
 EAST, SOUTH, WEST, NORTH = 0, 1, 2, 3
 DIRECTIONS = [(0, 1), (1, 0), (0, -1), (-1, 0)]
@@ -63,5 +65,5 @@ def run(maze: list[list[str]]) -> int:
     return find_best_path(maze)
 
 
-PARSER = str.splitlines
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = str.splitlines

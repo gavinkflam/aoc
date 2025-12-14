@@ -15,6 +15,7 @@ Solutions:
             1. Use Gauss summation to speed up checksum calculation
 """
 
+from aoclibs.executions import SolutionModule
 from aoclibs.hofs import mapf
 
 
@@ -52,5 +53,5 @@ def run(disk: list[int]) -> int:
     return checksum
 
 
-PARSER = mapf(int)
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = mapf(int)

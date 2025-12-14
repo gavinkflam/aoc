@@ -17,6 +17,7 @@ Solutions:
 
 from aoc2024.solutions import star37
 from aoc2024.solutions.star37 import Trie
+from aoclibs.executions import SolutionModule
 
 
 def run(info: tuple[list[str], list[str]]) -> int:
@@ -49,5 +50,5 @@ def run(info: tuple[list[str], list[str]]) -> int:
     return arrangements
 
 
-PARSER = star37.PARSER
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = star37.solution.parser

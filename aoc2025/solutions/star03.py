@@ -14,6 +14,7 @@ Solutions:
 
 import math
 
+from aoclibs.executions import SolutionModule
 from aoclibs.hofs import compose, mapf, str_splitf
 
 
@@ -41,5 +42,5 @@ def run(ranges: list[list[str]]) -> int:
     return ans
 
 
-PARSER = compose(mapf(str_splitf("-")), str_splitf(","))
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = compose(mapf(str_splitf("-")), str_splitf(","))

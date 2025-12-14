@@ -13,6 +13,7 @@ Solutions:
 
 import math
 
+from aoclibs.executions import SolutionModule
 from aoclibs.hofs import str_splitf
 
 
@@ -38,5 +39,5 @@ def run(stones: list[int]) -> int:
     return len(stones)
 
 
-PARSER = str_splitf(" ", int)
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = str_splitf(" ", int)

@@ -15,6 +15,7 @@ Solutions:
 from typing import Optional
 import re
 
+from aoclibs.executions import SolutionModule
 from aoclibs.hofs import compose, mapf, re_splitf
 
 
@@ -97,5 +98,5 @@ def run(devices: list[list[str]]) -> int:
     return count_paths(adj_list, in_degrees, "you", "out")
 
 
-PARSER = compose(mapf(re_splitf(re.compile(r":?\s"))), str.splitlines)
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = compose(mapf(re_splitf(re.compile(r":?\s"))), str.splitlines)

@@ -8,6 +8,7 @@ Solutions:
         - O(rows * cols) time, O(1) auxiliary space
 """
 
+from aoclibs.executions import SolutionModule
 from aoclibs.hofs import compose, mapf, str_splitf
 
 
@@ -36,8 +37,8 @@ def run(grid: list[list[int]]) -> int:
     return safe_reports
 
 
-PARSER = compose(
+solution = SolutionModule(run=run)
+solution.parser = compose(
     mapf(compose(mapf(int), str_splitf(" "))),
     str.splitlines,
 )
-PRINTER = str

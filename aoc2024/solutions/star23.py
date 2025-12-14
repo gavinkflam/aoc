@@ -8,6 +8,9 @@ Solutions:
         - O(mn) time, O(mn) auxiliary space
 """
 
+from aoclibs.executions import SolutionModule
+
+
 DIRECTIONS = [(-1, 0), (0, 1), (1, 0), (0, -1)]
 
 
@@ -46,5 +49,5 @@ def run(grid: list[str]) -> int:
     return costs
 
 
-PARSER = str.splitlines
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = str.splitlines

@@ -15,6 +15,7 @@ Solutions:
 
 import math
 
+from aoclibs.executions import SolutionModule
 from aoclibs.hofs import (
     compose,
     ith,
@@ -62,7 +63,8 @@ def run(manual: list[tuple[str, list[list[int]]]]) -> int:
     return ans
 
 
-PARSER = compose(
+solution = SolutionModule(run=run)
+solution.parser = compose(
     mapf(
         compose(
             tuple,
@@ -76,4 +78,3 @@ PARSER = compose(
     ),
     str.splitlines,
 )
-PRINTER = str

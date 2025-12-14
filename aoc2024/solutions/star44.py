@@ -14,6 +14,7 @@ Solutions:
 
 from collections import defaultdict, deque
 
+from aoclibs.executions import SolutionModule
 from aoc2024.solutions import star43
 
 
@@ -53,5 +54,5 @@ def run(secrets: list[int]) -> int:
     return max_bananas
 
 
-PARSER = star43.PARSER
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = star43.solution.parser

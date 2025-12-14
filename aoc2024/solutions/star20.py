@@ -11,6 +11,7 @@ Solutions:
 """
 
 from aoc2024.solutions import star19
+from aoclibs.executions import SolutionModule
 
 
 def run(grid: list[list[int]]) -> int:
@@ -41,5 +42,5 @@ def run(grid: list[list[int]]) -> int:
     return trailhead_ratings
 
 
-PARSER = star19.PARSER
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = star19.solution.parser

@@ -8,10 +8,10 @@ Solutions:
         - O(qm) time, O(1) auxiliary space,
             where q = number of region queries,
                   m = number of presents
-                  
 """
 
 from aoclibs import patterns
+from aoclibs.executions import SolutionModule
 from aoclibs.hofs import (
     compose,
     ith,
@@ -39,7 +39,8 @@ def run(summary: tuple[list[list[str]], list[list[int]]]) -> int:
     return ans
 
 
-PARSER = compose(
+solution = SolutionModule(run=run)
+solution.parser = compose(
     tuple,
     zip_applyf(
         mapf(seq_slice(1)),
@@ -49,4 +50,3 @@ PARSER = compose(
     seq_split(""),
     str.splitlines,
 )
-PRINTER = str

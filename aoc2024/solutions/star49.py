@@ -10,6 +10,7 @@ Solutions:
                   n = number of keys
 """
 
+from aoclibs.executions import SolutionModule
 from aoclibs.hofs import compose, seq_split
 
 
@@ -54,5 +55,5 @@ def run(blocks: list[list[str]]) -> int:
     return fits
 
 
-PARSER = compose(seq_split(""), str.splitlines)
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = compose(seq_split(""), str.splitlines)

@@ -11,7 +11,7 @@ Solutions:
         - Remarks:
             This solution is only checking trivial problems against the standard implementation
             of a binary adder.
-            
+
             It won't work if the swaps are more careful (e.g. swapping wires of the same role
             in two different bits), or the circuit is different than the standard implementation.
 """
@@ -20,6 +20,7 @@ import re
 
 from aoc2024.solutions import star47
 from aoc2024.solutions.star47 import Board
+from aoclibs.executions import SolutionModule
 from aoclibs.hofs import str_join
 
 
@@ -146,5 +147,6 @@ def run(board: Board) -> list[str]:
     return sorted(bad_wires)
 
 
-PARSER = star47.PARSER
-PRINTER = str_join(",")
+solution = SolutionModule(run=run)
+solution.parser = star47.solution.parser
+solution.printer = str_join(",")

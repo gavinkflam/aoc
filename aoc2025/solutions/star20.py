@@ -18,6 +18,7 @@ Solutions:
         - Credits: https://www.reddit.com/r/adventofcode/comments/1pk87hl/
 """
 
+from aoclibs.executions import SolutionModule
 from aoc2025.solutions import star19
 
 
@@ -111,5 +112,5 @@ def run(manual: list[tuple[str, list[list[int]]]]) -> int:
     return ans
 
 
-PARSER = star19.PARSER
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = star19.solution.parser

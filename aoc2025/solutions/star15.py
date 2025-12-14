@@ -15,6 +15,7 @@ Solutions:
 from collections import defaultdict
 import heapq
 
+from aoclibs.executions import SolutionModule
 from aoclibs.hofs import compose, mapf, str_splitf
 from aoclibs.union_find import UnionFind
 
@@ -64,5 +65,5 @@ def run(boxes: list[list[int]]) -> int:
     return -heapq.heappop(sizes) * -heapq.heappop(sizes) * -heapq.heappop(sizes)
 
 
-PARSER = compose(mapf(str_splitf(",", int)), str.splitlines)
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = compose(mapf(str_splitf(",", int)), str.splitlines)

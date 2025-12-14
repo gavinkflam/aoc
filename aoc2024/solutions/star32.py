@@ -15,6 +15,7 @@ import heapq
 
 from aoc2024.solutions import star31
 from aoc2024.solutions.star31 import DIRECTIONS, EAST
+from aoclibs.executions import SolutionModule
 
 
 UNVISITED = 1 << 32 - 1
@@ -104,5 +105,5 @@ def run(maze: list[list[str]]) -> int:
     return count_good_spots(maze, scores)
 
 
-PARSER = str.splitlines
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = str.splitlines

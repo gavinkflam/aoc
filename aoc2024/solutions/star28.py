@@ -12,6 +12,7 @@ Solutions:
                   n = width
 """
 
+from aoclibs.executions import SolutionModule
 from aoc2024.solutions import star27
 
 
@@ -76,5 +77,5 @@ def run(robots: list[list[int]]) -> int:
     return -1
 
 
-PARSER = star27.PARSER
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = star27.solution.parser

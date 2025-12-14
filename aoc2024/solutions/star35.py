@@ -10,6 +10,7 @@ Solutions:
         - O(mn) time, O(mn) auxiliary space
 """
 
+from aoclibs.executions import SolutionModule
 from aoclibs.hofs import compose, mapf, str_splitf
 
 
@@ -61,5 +62,5 @@ def run(positions: list[list[int]]) -> int:
     return steps_to_reach_exit(grid)
 
 
-PARSER = compose(mapf(str_splitf(",", int)), str.splitlines)
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = compose(mapf(str_splitf(",", int)), str.splitlines)

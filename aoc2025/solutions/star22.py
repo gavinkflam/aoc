@@ -12,6 +12,7 @@ Solutions:
             where E = number of connections
 """
 
+from aoclibs.executions import SolutionModule
 from aoc2025.solutions import star21
 
 
@@ -31,5 +32,5 @@ def run(devices: list[list[str]]) -> int:
     )
 
 
-PARSER = star21.PARSER
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = star21.solution.parser

@@ -23,6 +23,7 @@ from typing import NamedTuple
 
 from aoc2024.solutions import star45
 from aoc2024.solutions.star45 import AdjacencyList
+from aoclibs.executions import SolutionModule
 
 
 Group = NamedTuple("Group", [("leader", str), ("members", set[str])])
@@ -70,5 +71,5 @@ def run(pairs: list[tuple[str, str]]) -> str:
     return next(iter(groups))
 
 
-PARSER = star45.PARSER
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = star45.solution.parser

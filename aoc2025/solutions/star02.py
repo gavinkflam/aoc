@@ -10,6 +10,7 @@ Solutions:
 """
 
 from aoc2025.solutions import star01
+from aoclibs.executions import SolutionModule
 
 
 def run(instructions: list[tuple[str, int]]) -> int:
@@ -26,5 +27,5 @@ def run(instructions: list[tuple[str, int]]) -> int:
     return zeros
 
 
-PARSER = star01.PARSER
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = star01.solution.parser

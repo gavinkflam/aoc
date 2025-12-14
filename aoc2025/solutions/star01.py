@@ -9,6 +9,7 @@ Solutions:
             where n = number of lines
 """
 
+from aoclibs.executions import SolutionModule
 from aoclibs.hofs import compose, mapf, split_take_n, zip_applyf
 
 
@@ -28,8 +29,8 @@ def run(instructions: list[tuple[str, int]]) -> int:
     return zeros
 
 
-PARSER = compose(
+solution = SolutionModule(run=run)
+solution.parser = compose(
     mapf(compose(tuple, zip_applyf(str, int), split_take_n(1))),
     str.splitlines,
 )
-PRINTER = str

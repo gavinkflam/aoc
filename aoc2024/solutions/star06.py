@@ -18,6 +18,8 @@ Solutions:
 
 import re
 
+from aoclibs.executions import SolutionModule
+
 
 PATTERN = re.compile(r"(mul)\((\d{1,3}),(\d{1,3})\)|(do)\(\)|(don't)\(\)")
 
@@ -41,5 +43,5 @@ def run(lines: list[str]) -> int:
     return answer
 
 
-PARSER = str.splitlines
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = str.splitlines

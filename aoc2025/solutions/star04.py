@@ -13,6 +13,7 @@ Solutions:
 """
 
 from aoc2025.solutions import star03
+from aoclibs.executions import SolutionModule
 
 
 def run(ranges: list[list[str]]) -> int:
@@ -47,5 +48,5 @@ def run(ranges: list[list[str]]) -> int:
     return ans
 
 
-PARSER = star03.PARSER
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = star03.solution.parser

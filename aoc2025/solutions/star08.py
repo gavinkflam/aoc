@@ -13,6 +13,7 @@ Solutions:
 """
 
 from aoc2025.solutions import star07
+from aoclibs.executions import SolutionModule
 
 
 def run(grid: list[list[str]]) -> int:
@@ -51,5 +52,5 @@ def run(grid: list[list[str]]) -> int:
     return removed
 
 
-PARSER = star07.PARSER
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = star07.solution.parser

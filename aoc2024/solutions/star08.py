@@ -8,6 +8,9 @@ Solutions:
         - O(mn) time, O(1) auxiliary space
 """
 
+from aoclibs.executions import SolutionModule
+
+
 DIAGONAL_1 = [(-1, -1), (1, 1)]
 DIAGONAL_2 = [(-1, 1), (1, -1)]
 TARGETS = ["MS", "SM"]
@@ -46,5 +49,5 @@ def run(lines: list[str]) -> int:
     return counts
 
 
-PARSER = str.splitlines
-PRINTER = str
+solution = SolutionModule(run=run)
+solution.parser = str.splitlines
