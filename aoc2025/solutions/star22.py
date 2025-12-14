@@ -1,7 +1,7 @@
 """Solution for 2025 star 22.
 
 Problem page:
-    https://adventofcode.com/2025/day/11
+    https://adventofcode.com/2025/day/11#part2
 
 Solutions:
     1. Brute force, backtracking

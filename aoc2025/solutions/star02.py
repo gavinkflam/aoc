@@ -1,7 +1,7 @@
 """Solution for 2025 star 2.
 
 Problem page:
-    https://adventofcode.com/2025/day/1
+    https://adventofcode.com/2025/day/1#part2
 
 Solutions:
     1. Simulation

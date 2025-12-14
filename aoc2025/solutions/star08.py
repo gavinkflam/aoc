@@ -1,7 +1,7 @@
 """Solution for 2025 star 8.
 
 Problem page:
-    https://adventofcode.com/2025/day/4
+    https://adventofcode.com/2025/day/4#part2
 
 Solutions:
     1. Brute force

@@ -1,7 +1,7 @@
 """Solution for 2025 star 12.
 
 Problem page:
-    https://adventofcode.com/2025/day/6
+    https://adventofcode.com/2025/day/6#part2
 
 Solutions:
     1. Simple iteration
