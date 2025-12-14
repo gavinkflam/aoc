@@ -1,13 +1,14 @@
 """Run solutions and compare against the answers."""
 
 import time
-from typing import Iterable
 
 from aoclibs import executions, files
 
 
-def test_solutions(year: int, stars: Iterable[int]):
-    """Run solutions with the defined input parser and result printer."""
+def test_solutions(year: int):
+    """Test all solutions of the given year."""
+    stars = files.stars_with_data_files(year)
+
     for star in stars:
         start_ns = time.time_ns()
         answer = executions.run_solution(year, star)

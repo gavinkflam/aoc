@@ -47,10 +47,29 @@ def decrypt_files(key: str) -> None:
         decrypt_file(key, filepath)
 
 
+def data_file_path(
+    year: int, file_prefix: str, file_number: int, path_prefix: str = "/"
+) -> str:
+    """Construct the file path to a data file."""
+    filename = f"{file_prefix}{str(file_number).zfill(2)}.txt"
+    return f"{PROJECT_DIR}{path_prefix}/aoc{year}/data/{filename}"
+
+
+def stars_with_data_files(year: int) -> list[int]:
+    """Return the stars with a data file in the directory of the requested year."""
+    path_template = data_file_path(year, "star", 0, path_prefix="/tests")
+    last_slash_pos = path_template.rfind("/")
+    data_directory_path = path_template[:last_slash_pos]
+
+    stars = [int(f.name[4:6]) for f in Path(data_directory_path).glob("star*.txt")]
+    stars.sort()
+
+    return stars
+
+
 def data_file_content(
     year: int, file_prefix: str, file_number: int, path_prefix: str = ""
 ) -> str:
     """Read the content of a data file."""
-    filename = f"{file_prefix}{str(file_number).zfill(2)}.txt"
-    filepath = f"{PROJECT_DIR}{path_prefix}/aoc{year}/data/{filename}"
-    return Path(filepath).read_text(encoding="utf-8")
+    path = data_file_path(year, file_prefix, file_number, path_prefix)
+    return Path(path).read_text(encoding="utf-8")
