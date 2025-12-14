@@ -1,7 +1,7 @@
 """Reusable higher order functions for handling solution inputs and outputs."""
 
 from functools import reduce
-from typing import Any, Callable, Pattern, Sequence
+from typing import Any, Callable, Optional, Pattern, Sequence
 
 
 def identity(x: Any) -> Any:
@@ -78,7 +78,7 @@ def seq_split(sep: Any) -> Callable[[Sequence[Any]], list[list[Any]]]:
 
 
 def seq_slice(
-    start: int, stop: int, step: int = 1
+    start: int, stop: Optional[int] = None, step: int = 1
 ) -> Callable[[Sequence[Any]], Sequence[Any]]:
     """Return a function that accept a sequence, to slice it using the given arguments."""
     return lambda ls: ls[start:stop:step]
